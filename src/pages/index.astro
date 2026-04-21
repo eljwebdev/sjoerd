@@ -47,9 +47,56 @@ const { data: page } = homepageRef
   description={page?.metaDescription}
   keywords={page?.keywords}
 >
-  {page?.content ? (
-    <PageBuilder content={page.content} />
-  ) : (
-    <p>Selecteer een homepage in de site-instellingen.</p>
-  )}
+
+<section>
+  <div class="container--grid container--margin-normal">
+    <div class="big-text">
+      <p>
+        typ
+      </p>
+      <p>
+        a brand defined by behaviour, built to attract the right minds
+      </p>
+    </div>
+    
+    <div class="small-text" style="margin-top: 40px;">
+      <p>
+        Brand identity, 
+      </p>
+      <p>
+        web design, motion,
+      </p>
+      <p>
+        interaction design
+      </p>
+    </div>
+    
+    <div class="small-text lowercase" style="margin-top: 40px;">
+      <p>
+        Brand identity, 
+      </p>
+      <p>
+        web design, motion,
+      </p>
+      <p>
+        interaction design
+      </p>
+    </div>
+    
+    <div class="small-text uppercase" style="margin-top: 40px;">
+      <p>
+        Brand identity, 
+      </p>
+      <p>
+        web design, motion,
+      </p>
+      <p>
+        interaction design
+      </p>
+    </div>
+  
+  </div>
+
+</section>
+
 </Layout>

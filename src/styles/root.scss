@@ -1,0 +1,55 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+:root {
+    --xxxl: #{$xxxl};
+    --xxl: #{$xxl};
+    --xl: #{$xl};
+    --lg: #{$lg};
+    --md: #{$md};
+    --sm: #{$sm};
+    --xs: #{$xs};
+    --xxs: #{$xxs};
+    --desktop-max-width: #{$desktop-max-width};
+    --desktop-container-max-width: #{$desktop-container-max-width};
+
+
+    /** Fonts **/
+    --font: "Arial", sans-serif;
+
+    /** Colors **/
+    --background: none;
+    --body: black;
+    --placeholder: grey;
+
+    --c-white: #F0E9E9;
+    --c-black: #000;
+    --c-dim: rgb(240 233 233 0.5);
+
+    /** Margins & padding **/
+    --padding-horizontal: 32px;    
+}
+
+@include responsiveMin($xl) {
+    :root {
+    /** Margins & padding **/
+    --padding-horizontal: 32px;
+
+    }
+}
+
+@include responsive($xl) {
+    :root {
+    /** Margins & padding **/
+    --padding-horizontal: 16px;
+
+    }
+}
+
+@include responsive($md) {
+    :root {
+    /** Margins & padding **/
+    --padding-horizontal: 12px;
+
+    }
+}

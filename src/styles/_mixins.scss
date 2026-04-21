@@ -10,12 +10,17 @@
   }
 }
 
-@mixin grid($desktop-cols: 12, $mobile-cols: 5, $row-size: 1fr, $mobile-breakpoint: $md) {
+@mixin grid($desktop-cols: 12, $mobile-cols: 3, $row-size: 1fr, $mobile-breakpoint: 800px) {
   display: grid;
   grid-template-columns: repeat($desktop-cols, $row-size);
-  gap: 10px;
+  gap: 16px;
 
   @include responsive($mobile-breakpoint) {
     grid-template-columns: repeat($mobile-cols, $row-size);
+    gap: 12px;
+  }
+
+  @include responsiveMin(1440px) {
+    gap: 32px;
   }
 }

@@ -1,10 +1,14 @@
 // ./src/sanity/schemaTypes/settings.ts
 import { defineField, defineType } from "sanity";
+import {CogIcon} from '@sanity/icons'
+
+// import { customLinkType } from "./customLink";
 
 export const settingsType = defineType({
   title: "Settings",
   name: "settings",
   type: "document",
+  icon: CogIcon,
   fields: [
     // ── Algemene instellingen ──
     defineField({
@@ -17,6 +21,11 @@ export const settingsType = defineType({
           type: 'string',
           name: 'title',
           title: 'Site Titel',
+        }),
+        defineField({
+          type: 'string',
+          name: 'mailadres',
+          title: 'E-mailadres',
         }),
         defineField({
           type: 'string',
@@ -39,54 +48,65 @@ export const settingsType = defineType({
       ],
     }),
 
-    // ── Organisatie (Schema.org) ──
     defineField({
       type: 'object',
-      name: 'organization',
-      title: 'Organisatie (SEO)',
-      description: 'Gegevens voor Google Knowledge Panel en structured data',
-      options: { collapsible: true, collapsed: true },
+      name: 'menu',
+      title: 'Header settings',
+      options: { collapsible: true, collapsed: false },
       fields: [
         defineField({
           type: 'string',
-          name: 'name',
-          title: 'Organisatienaam',
-        }),
-        defineField({
-          type: 'url',
-          name: 'url',
-          title: 'Website URL',
-          description: 'Bijv. https://www.example.nl',
-        }),
-        defineField({
-          type: 'image',
-          name: 'logo',
-          title: 'Organisatie Logo',
-          description: 'Logo voor Google Knowledge Panel (min. 112x112px)',
+          name: 'menuTitle',
+          title: 'Menu Titel',
         }),
         defineField({
           type: 'string',
-          name: 'phone',
-          title: 'Telefoonnummer',
+          name: 'workTitle',
+          title: 'Work link text',
         }),
         defineField({
-          type: 'email',
-          name: 'email',
-          title: 'E-mailadres',
+          type: 'string',
+          name: 'tagLine',
+          title: 'Tagline visible',
         }),
         defineField({
-          type: 'object',
-          name: 'address',
-          title: 'Adres',
-          fields: [
-            defineField({ type: 'string', name: 'street', title: 'Straat + Huisnummer' }),
-            defineField({ type: 'string', name: 'postalCode', title: 'Postcode' }),
-            defineField({ type: 'string', name: 'city', title: 'Plaats' }),
-            defineField({ type: 'string', name: 'country', title: 'Land', initialValue: 'NL' }),
-          ],
+          type: 'string',
+          name: 'tagLineHover',
+          title: 'Tagline hover',
+        }),
+        defineField({
+          type: 'string',
+          name: 'tagLineMob1',
+          title: 'Tagline mobile line 1',
+        }),
+        defineField({
+          type: 'string',
+          name: 'tagLineMob2',
+          title: 'Tagline mobile line 2',
+        }),
+        defineField({
+          type: 'string',
+          name: 'infoText',
+          title: 'Info text',
+        }),
+        defineField({
+          type: 'string',
+          name: 'infoTextHover',
+          title: 'Info text hover',
+        }),
+        defineField({
+          type: 'string',
+          name: 'contactText',
+          title: 'Contact text',
+        }),
+        defineField({
+          type: 'string',
+          name: 'contactTextHover',
+          title: 'Contact text hover',
         }),
       ],
     }),
+    
 
   ],
 

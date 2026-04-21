@@ -29,14 +29,14 @@ export const pageType = defineType({
       type: "pageBuilder",
       group: 'content',
     }),
-    defineField({
-      name: "mainImage",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      group: 'content',
-    }),
+    // defineField({
+    //   name: "mainImage",
+    //   type: "image",
+    //   options: {
+    //     hotspot: true,
+    //   },
+    //   group: 'content',
+    // }),
     defineField({
       name: "metaTitle",
       title: "Meta Titel",

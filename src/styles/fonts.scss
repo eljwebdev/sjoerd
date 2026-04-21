@@ -1,31 +1,78 @@
-@use 'mixins' as *;
 @use 'variables' as *;
+@use 'mixins' as *;
 
 @font-face {
     font-family: 'Diatype';
-    src: url('../assets/fonts/ABCDiatype-Light.woff2');
-    font-weight: 500;
+    src: url('/fonts/ABCDiatype-Light.woff2');
+    font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Diatype Mono';
-    src: url('../assets/fonts/ABCDiatypeMono-Light.woff2');
-    font-weight: 500;
+    src: url('/fonts/ABCDiatypeMono-Light.woff2');
+    font-weight: 300;
     font-style: normal;
 }
 
 
-@mixin bigtext() {
+@mixin big-text() {
   font-family: 'Diatype', sans-serif;
-  font-size: clamp(1.125rem, 5vw, 1.875rem);
-  font-weight: 900;
+  // font-size: clamp(1.125rem, 1.67vw, 1.875rem);
+  font-size: clamp(1.125rem, 0.695vw + 0.763rem, 1.875rem);
+  font-weight: 300;
   font-style: normal;
-  line-height: normal;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+
+  @include responsiveMin(1600px) {
+    line-height: 1.1;
+  }
 
   @include responsive($md){
     font-size: 1.125rem;
   }
+}
+
+.big-text {
+  @include big-text();
+}
+
+@mixin small-text() {
+  font-family: 'Diatype Mono', sans-serif;
+  // font-size: clamp(10px, 0.83vw, 14px);
+  font-size: clamp(0.625rem, 0.232vw + 0.5044rem, 0.875rem);
+  font-weight: 300;
+  font-style: normal;
+  line-height: 1.4;
+
+  @include responsive($md){
+    font-size: 0.625rem;
+  }
+}
+
+.small-text {
+  @include small-text();
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.c-white {
+  color: var(--c-white);
+}
+
+.c-black {
+  color: var(--c-black);
+}
+
+.c-dim {
+  color: var(--c-dim);
 }
 
 

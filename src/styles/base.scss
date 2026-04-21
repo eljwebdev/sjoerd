@@ -1,5 +1,5 @@
-@use 'mixins' as *;
 @use 'variables' as *;
+@use 'mixins' as *;
 
 /* ------- defaults & resets -------  */
 
@@ -11,8 +11,9 @@
 
 html,
 body {
-    color: var(--zwart);
-    font-family: var(--font);
+    background: var(--c-black);
+    font-family: 'Diatype', sans-serif;
+    color: var(--c-white);
     font-weight: normal;
     font-style: normal;
     font-size: 16px;
@@ -109,6 +110,10 @@ ul a {
 
 /* ------- global styles -------  */
 
+.container--grid {
+    @include grid();
+}
+
 .container--margin-normal {
     padding-left: var(--padding-horizontal);
     padding-right: var(--padding-horizontal);
@@ -122,41 +127,36 @@ ul a {
     }
 }
 
-div#page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-
-    .content {
-        flex: 1;
-    }
+.section-project:first-of-type {
+    margin-top: calc(96px + 40px);
 }
 
-.content {
-    padding-top: 150px;
-
-    @include responsive ($md) {
-        padding-top: 100px;
-    }
+.section-project:not(:first-of-type) {
+    margin-top: 256px;
 }
+
+// div#page {
+//     display: flex;
+//     flex-direction: column;
+//     min-height: 100vh;
+
+//     .content {
+//         flex: 1;
+//     }
+// }
+
+// .content {
+//     padding-top: 150px;
+
+//     @include responsive ($md) {
+//         padding-top: 100px;
+//     }
+// }
 
 @view-transition {
   navigation: auto;
 }
   
-/* smaller fontsizes for inbetween resolutions */
-@media (max-width: $lg) {
-    html, body {
-        font-size: 13px;
-    }
-}
-
-/* reset to original rem size on mobile */
-@media (max-width: $md) {
-    html, body {
-        font-size: 16px;
-    }
-}
 
 /* class to hide visually but keep available to screen readers (for accessibility) */
 .visually-hidden {
