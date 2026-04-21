@@ -1,0 +1,47 @@
+---
+import { loadQuery } from "../sanity/lib/load-query";
+import Layout from "../layouts/Layout.astro";
+import Error404 from "../components/errors/Error404.astro";
+
+export const prerender = false;
+
+const url = new URL(Astro.request.url);
+const path = url.pathname.replace(/\/$/, "") || "/";
+
+const { data } = await loadQuery<{
+  redirects: {
+    source: string;
+    targetSlug: string;
+    targetId: string;
+    type: string;
+  }[] | null;
+  homepageId: string | null;
+}>({
+  query: `{
+    "redirects": *[_type == "redirects" && _id == "redirects"][0].redirects[]{
+      source,
+      "targetSlug": target->slug.current,
+      "targetId": target->_id,
+      type
+    },
+    "homepageId": *[_type == "settings" && _id == "settings"][0].settings.homepage._ref
+  }`,
+});
+
+const match = data?.redirects?.find(
+  (r) => r.source.replace(/\/$/, "") === path
+);
+
+if (match) {
+  const destination = match.targetId === data?.homepageId
+    ? "/"
+    : `/${match.targetSlug}`;
+  return Astro.redirect(destination + url.search, parseInt(match.type) || 301);
+}
+
+Astro.response.status = 404;
+---
+
+<Layout title="404 - Pagina niet gevonden">
+  <Error404 />
+</Layout>

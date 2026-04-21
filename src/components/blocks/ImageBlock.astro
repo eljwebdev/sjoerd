@@ -1,0 +1,49 @@
+---
+import SanityImage from "../SanityImage.astro";
+
+interface Props {
+  image: any;
+  alt?: string;
+  caption?: string;
+}
+
+const { image, alt, caption } = Astro.props;
+---
+
+<figure class="image-block">
+  <SanityImage
+    image={image}
+    alt={alt || ""}
+    width={1200}
+    layout="constrained"
+    class="image-block-img"
+  />
+  {caption && (
+    <figcaption class="image-block-caption">
+      {caption}
+    </figcaption>
+  )}
+</figure>
+
+<style lang="scss">
+  .image-block {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .image-block-img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+  }
+
+  .image-block-caption {
+    text-align: center;
+    color: #475569;
+    margin-top: 1rem;
+    font-style: italic;
+  }
+</style>

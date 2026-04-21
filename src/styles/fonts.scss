@@ -1,0 +1,143 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+@mixin h1() {
+  font-family: var(--font);
+  font-size: 60px;
+  font-weight: 900;
+  font-style: normal;
+  line-height: normal;
+
+  @include responsive($md){
+    font-size: 42px;
+  }
+}
+
+@mixin h2() {
+  font-family: var(--font);
+  font-size: 39px;
+  font-weight: 900;
+  font-style: normal;
+  line-height: normal;
+
+  //same on mobile
+}
+
+@mixin h3() {
+  font-family: var(--font);
+  font-size: 28px;
+  font-weight: 900;
+  font-style: normal;
+  line-height: 1.15;
+
+  //same on mobile
+}
+
+@mixin h4() {
+  font-family: var(--font);
+  font-size: 20px;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.25;
+  
+  //same on mobile
+}
+
+@mixin fontbodyregular(){
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.5;
+
+  @include responsive ($md) {
+    font-size: 16px;
+    line-height: 1.625;
+  }
+}
+
+@mixin fontbodylarge(){
+  font-family: var(--font);
+  font-size: 28px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.25;
+
+  @include responsive ($md) {
+    font-size: 24px;
+  }
+}
+
+@mixin fontmenu1() {
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1;
+
+  @include responsive ($md) {
+    font-size: 35px;
+  } 
+}
+
+
+/** headers **/
+
+h1, .h1 {
+  @include h1();
+}
+
+h2, .h2 {
+  @include h2();
+}
+
+h3, .h3 {
+  @include h3();
+}
+
+h4, .h4, h5, h6 {
+  @include h4();
+}
+
+/** body fonts **/
+
+p, .font-body-regular, a {
+  @include fontbodyregular();
+}
+
+ul, ol {
+  li {
+      @include fontbodyregular();
+  }
+}
+
+a, a:hover {
+  text-decoration: underline;
+}
+
+/** menu fonts **/
+
+.menu {
+  .menu-item {
+    a {
+      @include fontmenu1();
+    }
+  }
+}
+
+/** quote fonts **/
+
+blockquote p {
+  @include fontbodyregular();
+}
+
+/** buttons fonts **/
+
+.button span {
+  @include h4();
+}
+
+/** diverse styling **/
+.fw700 {
+  font-weight: 700;
+}

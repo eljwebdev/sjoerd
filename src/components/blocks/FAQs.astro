@@ -1,0 +1,200 @@
+---
+import PortableText from "../PortableText.astro";
+
+interface FAQ {
+  _id: string;
+  title?: string;
+  body?: any[];
+}
+
+interface Props {
+  _key?: string;
+  title?: string;
+  faqs?: FAQ[];
+}
+
+const { _key, title, faqs } = Astro.props;
+
+function portableTextToPlain(blocks: any[]): string {
+  return blocks
+    .filter((block: any) => block._type === 'block')
+    .map((block: any) =>
+      (block.children ?? [])
+        .map((child: any) => child.text ?? '')
+        .join('')
+    )
+    .join('\n');
+}
+
+const faqJsonLd = faqs?.length ? JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs
+    .filter((faq) => faq.title && faq.body)
+    .map((faq) => ({
+      "@type": "Question",
+      "name": faq.title,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": portableTextToPlain(faq.body!),
+      },
+    })),
+}) : null;
+---
+
+{faqJsonLd && (
+  <script is:inline type="application/ld+json" set:html={faqJsonLd} />
+)}
+
+<section class="faqs-section">
+  {title && <h2 class="faqs-title">{title}</h2>}
+  {faqs && Array.isArray(faqs) && (
+    <div class="faqs-accordion">
+      {faqs.map((faq) => (
+        <div class="faq-item">
+          <h3 class="faq-heading">
+            <button
+              class="faq-trigger"
+              id={`faq-btn-${faq._id}`}
+              aria-expanded="false"
+              aria-controls={`faq-panel-${faq._id}`}
+            >
+              <span>{faq.title}</span>
+              <span class="faq-icon" aria-hidden="true">▼</span>
+            </button>
+          </h3>
+          <div
+            id={`faq-panel-${faq._id}`}
+            role="region"
+            aria-labelledby={`faq-btn-${faq._id}`}
+            class="faq-panel"
+            hidden
+          >
+            <div class="faq-panel-inner">
+              {faq.body && <PortableText portableText={faq.body} />}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</section>
+
+<script>
+  document.querySelectorAll('.faqs-accordion').forEach((accordion) => {
+    const triggers = Array.from(accordion.querySelectorAll<HTMLButtonElement>('.faq-trigger'));
+
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => {
+        const expanded = trigger.getAttribute('aria-expanded') === 'true';
+        const panelId = trigger.getAttribute('aria-controls')!;
+        const panel = document.getElementById(panelId)!;
+
+        trigger.setAttribute('aria-expanded', String(!expanded));
+        panel.hidden = expanded;
+      });
+
+      trigger.addEventListener('keydown', (e: KeyboardEvent) => {
+        let newIndex = index;
+        switch (e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            newIndex = (index + 1) % triggers.length;
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            newIndex = (index - 1 + triggers.length) % triggers.length;
+            break;
+          case 'Home':
+            e.preventDefault();
+            newIndex = 0;
+            break;
+          case 'End':
+            e.preventDefault();
+            newIndex = triggers.length - 1;
+            break;
+          default:
+            return;
+        }
+        triggers[newIndex].focus();
+      });
+    });
+  });
+</script>
+
+<style lang="scss">
+  .faqs-section {
+    max-width: 1280px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-block: 4rem;
+  }
+
+  .faqs-title {
+    margin-inline: auto;
+    @include h2();
+  }
+
+  .faqs-accordion {
+    max-width: 42rem;
+    margin-inline: auto;
+    border-bottom: 1px solid var(--rood);
+    width: 100%;
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--rood);
+  }
+
+  .faq-heading {
+    margin: 0;
+  }
+
+  .faq-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    text-align: left;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #1e293b;
+      outline-offset: -2px;
+    }
+
+    &[aria-expanded="true"] {
+      background-color: #e0e0e0;
+
+      .faq-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .faq-icon {
+    font-size: 0.875rem;
+    flex-shrink: 0;
+    transition: transform 200ms;
+  }
+
+  .faq-panel {
+    padding: 0 1rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #475569;
+  }
+</style>

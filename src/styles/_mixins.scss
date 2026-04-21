@@ -1,0 +1,21 @@
+@mixin responsive($size, $prop: max-width) {
+    @media only screen and (#{$prop}: $size) {
+        @content;
+    }
+}
+
+@mixin responsiveMin($size, $prop: min-width) {
+  @media only screen and (#{$prop}: $size) {
+      @content;
+  }
+}
+
+@mixin grid($desktop-cols: 12, $mobile-cols: 5, $row-size: 1fr, $mobile-breakpoint: $md) {
+  display: grid;
+  grid-template-columns: repeat($desktop-cols, $row-size);
+  gap: 10px;
+
+  @include responsive($mobile-breakpoint) {
+    grid-template-columns: repeat($mobile-cols, $row-size);
+  }
+}

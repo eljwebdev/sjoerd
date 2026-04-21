@@ -1,0 +1,72 @@
+---
+import SanityImage from "../SanityImage.astro";
+
+interface Props {
+  title?: string;
+  image?: any;
+  orientation?: "imageLeft" | "imageRight";
+}
+
+const { title, image, orientation = "imageLeft" } = Astro.props;
+---
+
+<section class="split-image-section" data-orientation={orientation}>
+  {image && (
+    <SanityImage
+      image={image}
+      alt={title || ""}
+      width={800}
+      height={600}
+      layout="constrained"
+      class="split-image-img"
+    />
+  )}
+  <div class="split-image-text">
+    {title && <h2 class="split-image-title">{title}</h2>}
+  </div>
+</section>
+
+<style lang="scss">
+  .split-image-section {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    gap: 2rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .split-image-section[data-orientation="imageRight"] {
+    flex-direction: row-reverse;
+  }
+
+  .split-image-img {
+    border-radius: 0.75rem;
+    width: 66.666%;
+    height: auto;
+  }
+
+  .split-image-text {
+    width: 33.333%;
+    display: flex;
+    align-items: center;
+  }
+
+  .split-image-title {
+    font-size: 1.875rem;
+    font-weight: 300;
+    color: #ec4899;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: 768px) {
+    .split-image-title { font-size: 3rem; }
+  }
+
+  @media (min-width: 1024px) {
+    .split-image-title { font-size: 6rem; }
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import { loadQuery } from "../sanity/lib/load-query";
+import Layout from "../layouts/Layout.astro";
+import PageBuilder from "../components/PageBuilder.astro";
+
+const { data: settings } = await loadQuery<{
+  settings: {
+    homepage?: {
+      _ref: string;
+    };
+  };
+}>({
+  query: `*[_type == "settings"][0]{ settings }`,
+});
+
+const homepageRef = settings?.settings?.homepage?._ref;
+
+const { data: page } = homepageRef
+  ? await loadQuery<{
+      title: string;
+      metaTitle?: string;
+      metaDescription?: string;
+      keywords?: string;
+      content: any[];
+    }>({
+      query: `*[_type == "page" && _id == $id][0]{
+        ...,
+        content[]{
+          ...,
+          _type == "faqs" => {
+            ...,
+            faqs[]->
+          },
+          _type == "formBlock" => {
+            ...,
+            form->
+          }
+        }
+      }`,
+      params: { id: homepageRef },
+    })
+  : { data: null };
+---
+
+<Layout
+  title={page?.metaTitle || page?.title}
+  description={page?.metaDescription}
+  keywords={page?.keywords}
+>
+  {page?.content ? (
+    <PageBuilder content={page.content} />
+  ) : (
+    <p>Selecteer een homepage in de site-instellingen.</p>
+  )}
+</Layout>

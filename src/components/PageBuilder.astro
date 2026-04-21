@@ -1,0 +1,35 @@
+---
+import Hero from "./blocks/Hero.astro";
+import SplitImage from "./blocks/SplitImage.astro";
+import Features from "./blocks/Features.astro";
+import FAQs from "./blocks/FAQs.astro";
+import Form from "./blocks/Form.astro";
+import ImageBlock from "./blocks/ImageBlock.astro";
+
+interface Props {
+  content: any[];
+}
+
+const { content } = Astro.props;
+---
+
+<main>
+  {content && Array.isArray(content) && content.map((block) => {
+    switch (block._type) {
+      case "hero":
+        return <Hero {...block} />;
+      case "splitImage":
+        return <SplitImage {...block} />;
+      case "features":
+        return <Features {...block} />;
+      case "faqs":
+        return <FAQs {...block} />;
+      case "formBlock":
+        return <Form {...block} />;
+      case "imageBlock":
+        return <ImageBlock {...block} />;
+      default:
+        return <div>Block not found: {block._type}</div>;
+    }
+  })}
+</main>
