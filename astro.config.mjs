@@ -23,10 +23,10 @@ export default defineConfig({
   integrations: [
     pagefind(),
     sanity({
-      projectId: 'qtgh5bm2',
+      projectId: 't278j63x',
       dataset: 'production',
       useCdn: false,
-      apiVersion: "2026-02-10",
+      apiVersion: "2026-04-21",
       studioBasePath: '/studio',
     }),
     react(),
@@ -35,6 +35,17 @@ export default defineConfig({
   adapter: cloudflare(),
 
   vite: {
+    resolve: {
+      dedupe: [
+        'sanity',
+        '@sanity/ui',
+        '@sanity/icons',
+        '@sanity/client',
+        'react',
+        'react-dom',
+        'styled-components',
+      ],
+    },
     css: {
       preprocessorOptions: {
         scss: {
