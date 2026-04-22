@@ -34,7 +34,7 @@
   }
 }
 
-.big-text {
+.big-text, .big-text p, .big-text a, .big-text ul li {
   @include big-text();
 }
 
@@ -51,7 +51,7 @@
   }
 }
 
-.small-text {
+.small-text, .small-text p, .small-text a, .small-text ul li {
   @include small-text();
 }
 
@@ -79,61 +79,34 @@
 
 /** headers **/
 
-// h1, .h1 {
-//   @include h1();
-// }
 
-// h2, .h2 {
-//   @include h2();
-// }
+h1, h2, h3, h4, h5, h6 {
+  @include big-text();
+}
 
-// h3, .h3 {
-//   @include h3();
-// }
+/** body fonts **/
 
-// h4, .h4, h5, h6 {
-//   @include h4();
-// }
+p, a {
+  @include big-text();
+}
 
-// /** body fonts **/
-
-// p, .font-body-regular, a {
-//   @include fontbodyregular();
-// }
-
-// ul, ol {
-//   li {
-//       @include fontbodyregular();
-//   }
-// }
+ul, ol {
+  li {
+      @include big-text();
+  }
+}
 
 // a, a:hover {
 //   text-decoration: underline;
 // }
 
-// /** menu fonts **/
+/** menu fonts **/
 
-// .menu {
-//   .menu-item {
-//     a {
-//       @include fontmenu1();
-//     }
-//   }
-// }
+.menu {
+  .menu-item {
+    a {
+      @include big-text();
+    }
+  }
+}
 
-// /** quote fonts **/
-
-// blockquote p {
-//   @include fontbodyregular();
-// }
-
-// /** buttons fonts **/
-
-// .button span {
-//   @include h4();
-// }
-
-// /** diverse styling **/
-// .fw700 {
-//   font-weight: 700;
-// }

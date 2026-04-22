@@ -30,13 +30,6 @@ export const infoPageType = defineType({
       validation: (rule) => rule.max(160).warning('Houd de beschrijving onder 160 tekens voor optimale weergave'),
       group: 'seo',
     }),
-    defineField({
-      name: "keywords",
-      title: "Zoekwoorden",
-      type: "string",
-      description: "Komma-gescheiden zoekwoorden (bijv. 'website, design, astro')",
-      group: 'seo',
-    }),
   ],
   preview: {
     select: {

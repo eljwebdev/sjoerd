@@ -1,8 +1,159 @@
 ---
+import { sanityClient } from 'sanity:client';
+
+const { menu } = await sanityClient.fetch(
+  `*[_type == "settings"][0]{ menu }`
+) ?? {};
+
+const path = Astro.url.pathname;
+let navClass = '';
+if (path === '/') navClass = 'current-home';
+if (path === '/info') navClass = 'current-info';
+
+
 ---
-<nav>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/info">Info</a></li>
-  </ul>
+<nav class:list={['nav', navClass]}>
+  <div class="nav--inner container--margin-normal container--grid">
+    <div class="left">
+      <a class="link-menu-title" href="/">{menu?.menuTitle}</a>
+      <p class="nav__tagline--mob1 mobile">{menu?.tagLineMob1}</p>
+      <p class="nav__tagline--mob2 mobile">{menu?.tagLineMob2}</p>
+    </div>
+    <div class="right container--grid-ninecols">
+      <div class="col col-2">
+        <a class="work-link" href="/">{menu?.workTitle}</a>
+          <div class="nav__tagline desktop big-text">
+            <p>{menu?.tagLine}<span class="hover">{menu?.tagLineHover}</span></p>
+        </div>
+      </div>
+      <div class="col col-3">
+        <a class="info-link" href="/info">{menu?.infoText}<span class="hover">{menu?.infoTextHover}</span></a>
+      </div>
+      <div class="col col-4">
+        <a href="/contact">{menu?.contactText}<span class="hover">{menu?.contactTextHover}</span></a>
+      </div>
+    </div>
+  </div>
 </nav>
+
+<style lang="scss">
+  .nav {
+    text-transform: lowercase;
+    position: fixed;
+    background-color: var(--c-black);
+    color: var(--c-dim);
+
+    @include responsive($md) {
+      position: static;
+    }
+
+    .link-menu-title {
+      @include responsive($md) {
+        color: var(--c-white);
+      }
+    }
+
+    .work-link, .info-link {
+      position: relative
+    }
+
+    .nav__tagline {
+        transition: opacity 0.6s ease;
+    }
+
+    .mobile {
+      @include responsiveMin($md){
+        display: none;
+      }
+    }
+
+    .desktop {
+      display: none;
+      @include responsiveMin($md){
+        display: block;
+      }
+    }
+
+    &.current-home {
+      .work-link {
+        color: var(--c-white);
+        display: flex;
+        gap: 7px;
+      }
+      .work-link::after {
+        content: '↓';
+        width: 5px;
+        height: 5px;
+      }
+    }
+
+    &.current-info {
+      .info-link {
+        color: var(--c-white);
+        display: flex;
+        gap: 7px;
+      }
+      .info-link::after {
+        content: '↓';
+        width: 5px;
+        height: 5px;
+      }
+      .nav__tagline {
+        opacity: 0;
+      }
+    }
+
+    /* grids */
+
+    .left {
+      grid-column: 1 / 4;
+    }
+
+    .right {
+      grid-column: 4 / 13;
+
+      @include responsive($md) {
+        position: sticky;
+        top: 0;
+        grid-column: 1 / 4;
+      }
+
+      .col-2 {
+        grid-column: 1 / 6;
+        display: flex;
+        gap: 18px;
+        @include responsive($md) {
+          grid-column: 1;
+        }
+      }
+      .col-3 {
+        grid-column: 6 / 8;
+                @include responsive($md) {
+          grid-column: 2;
+        }
+      }
+      .col-4 {
+        grid-column: 8 / 10;
+                @include responsive($md) {
+          grid-column: 3;
+        }
+      }
+    }
+
+    /* other */ 
+
+    .nav--inner {
+      padding-top: 8px;
+      padding-bottom: 5px;
+      @include responsive($md) {
+        padding-top: 8px;
+        padding-bottom: 0px;
+      }
+    }
+
+    .hover {
+      display: none;
+    }
+
+  }
+</style>

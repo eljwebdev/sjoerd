@@ -4,8 +4,7 @@ import { sanityClient } from 'sanity:client';
 
 const homePage = await sanityClient.fetch(
   `*[_type == "homePage"][0]{
-	  "title": homePage.title,
-    "description": homePage.description,
+  title, description
   }`
 );
 const { title, description } = homePage ?? {};
@@ -14,61 +13,17 @@ const { title, description } = homePage ?? {};
 
 
 
-<Layout pageTitle={title}>
+<Layout pageTitle={title} pageDescription={description}>
 
 <h1>{title}</h1>
 
 
 
 <section>
-  <div class="container--grid container--margin-normal">
-    <div class="big-text">
-      <p>
-        typ
-      </p>
-      <p>
-        a brand defined by behaviour, built to attract the right minds
-      </p>
-    </div>
-    
-    <div class="small-text" style="margin-top: 40px;">
-      <p>
-        Brand identity, 
-      </p>
-      <p>
-        web design, motion,
-      </p>
-      <p>
-        interaction design
-      </p>
-    </div>
-    
-    <div class="small-text lowercase" style="margin-top: 40px;">
-      <p>
-        Brand identity, 
-      </p>
-      <p>
-        web design, motion,
-      </p>
-      <p>
-        interaction design
-      </p>
-    </div>
-    
-    <div class="small-text uppercase" style="margin-top: 40px;">
-      <p>
-        Brand identity, 
-      </p>
-      <p>
-        web design, motion,
-      </p>
-      <p>
-        interaction design
-      </p>
-    </div>
-  
+  <div style="height: 400vh; background: grey;">
+    <p>Tekst</p>
   </div>
-
 </section>
+
 
 </Layout>

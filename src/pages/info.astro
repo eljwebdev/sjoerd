@@ -1,2 +1,25 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import { sanityClient } from 'sanity:client';
+
+const infoPage = await sanityClient.fetch(
+  `*[_type == "infoPage"][0]{ title, description
+  }`
+);
+const { title, description } = infoPage ?? {};
+
 ---
+
+
+
+<Layout pageTitle={title}>
+
+<h1>{title}</h1>
+<p>{description}</p>
+
+
+<section>
+  <div class="container--grid container--margin-normal">
+</section>
+
+</Layout>

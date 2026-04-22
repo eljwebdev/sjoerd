@@ -17,7 +17,7 @@ export const settingsType = defineType({
       fields: [
         defineField({
           type: 'string',
-          name: 'title',
+          name: 'siteTitle',
           title: 'Site Titel',
         }),
         defineField({
@@ -27,7 +27,7 @@ export const settingsType = defineType({
         }),
         defineField({
           type: 'string',
-          name: 'description',
+          name: 'siteDescription',
           title: 'Meta Beschrijving',
         }),
         defineField({
@@ -36,13 +36,13 @@ export const settingsType = defineType({
           title: 'Toestaan dat zoekmachines deze site indexeren?',
           initialValue: false,
         }),
-        defineField({
-          type: 'reference',
-          name: 'homepage',
-          title: 'Homepage',
-          description: 'Selecteer welke pagina als homepage wordt weergegeven',
-          to: [{ type: 'homePage' }],
-        }),
+        // defineField({
+        //   type: 'reference',
+        //   name: 'homepage',
+        //   title: 'Homepage',
+        //   description: 'Selecteer welke pagina als homepage wordt weergegeven',
+        //   to: [{ type: 'homePage' }],
+        // }),
       ],
     }),
 
@@ -110,7 +110,7 @@ export const settingsType = defineType({
 
   preview: {
     select: {
-      title: "settings.title",
+      title: "settings.siteTitle",
     },
   },
 });
