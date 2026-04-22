@@ -1,52 +1,24 @@
 ---
-import { loadQuery } from "../sanity/lib/load-query";
 import Layout from "../layouts/Layout.astro";
-import PageBuilder from "../components/PageBuilder.astro";
+import { sanityClient } from 'sanity:client';
 
-const { data: settings } = await loadQuery<{
-  settings: {
-    homepage?: {
-      _ref: string;
-    };
-  };
-}>({
-  query: `*[_type == "settings"][0]{ settings }`,
-});
+const homePage = await sanityClient.fetch(
+  `*[_type == "homePage"][0]{
+	  "title": homePage.title,
+    "description": homePage.description,
+  }`
+);
+const { title, description } = homePage ?? {};
 
-const homepageRef = settings?.settings?.homepage?._ref;
-
-const { data: page } = homepageRef
-  ? await loadQuery<{
-      title: string;
-      metaTitle?: string;
-      metaDescription?: string;
-      keywords?: string;
-      content: any[];
-    }>({
-      query: `*[_type == "page" && _id == $id][0]{
-        ...,
-        content[]{
-          ...,
-          _type == "faqs" => {
-            ...,
-            faqs[]->
-          },
-          _type == "formBlock" => {
-            ...,
-            form->
-          }
-        }
-      }`,
-      params: { id: homepageRef },
-    })
-  : { data: null };
 ---
 
-<Layout
-  title={page?.metaTitle || page?.title}
-  description={page?.metaDescription}
-  keywords={page?.keywords}
->
+
+
+<Layout pageTitle={title}>
+
+<h1>{title}</h1>
+
+
 
 <section>
   <div class="container--grid container--margin-normal">

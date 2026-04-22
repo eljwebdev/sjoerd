@@ -1,169 +1,45 @@
 ---
 import '../styles/main.scss';
-import { loadQuery } from '../sanity/lib/load-query';
-import { urlForImage } from '../sanity/lib/url-for-image';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
+import { sanityClient } from 'sanity:client';
 
 interface Props {
-	title?: string;
-	description?: string;
-	keywords?: string;
+  pageTitle: string;
 }
+const { pageTitle } = Astro.props;
 
-const { title: titleOverride, description: descriptionOverride, keywords } = Astro.props;
 
-const { data: settings } = await loadQuery<any>({
-	query: `*[_type == "settings"][0]{
-		settings,
-		mainNavigation {
-			logo,
-			links[] {
-				label, linkType, externalUrl, target, rel,
-				internalLink-> { _id, _type, slug }
-			}
-		},
-		footer {
-			logo,
-			copyright,
-			links[] {
-				label, linkType, externalUrl, target, rel,
-				internalLink-> { _id, _type, slug }
-			},
-			legalLinks[] {
-				label, linkType, externalUrl, target, rel,
-				internalLink-> { _id, _type, slug }
-			}
-		},
-		socials {
-			items[] { platform, label, url }
-		},
-		tracking {
-			provider, measurementId
-		},
-		organization {
-			name, url, logo, phone, email,
-			address { street, postalCode, city, country }
-		}
-	}`,
-});
+const settings = await sanityClient.fetch(
+  `*[_type == "settings"][0]{
+	"title": settings.title,
+    "description": settings.description,
+    "indexing": settings.indexing,
+  }`
+);
+const { title, description, indexing } = settings ?? {};
 
-const siteTitle = settings?.settings?.title ?? 'Astro Basics';
-const title = titleOverride ? `${titleOverride} | ${siteTitle}` : siteTitle;
-const description = descriptionOverride ?? settings?.settings?.description;
-const iconAsset = settings?.settings?.icon?.asset;
-const faviconUrl = iconAsset ? urlForImage(settings.settings.icon!).width(64).height(64).url() : '/favicon.svg';
-const indexing = settings?.settings?.indexing ?? false;
 
-// Logos: nav/footer override general
-const generalLogo = settings?.settings?.logo;
-const navLogoSource = settings?.mainNavigation?.logo ?? generalLogo;
-const footerLogoSource = settings?.footer?.logo ?? generalLogo;
-const navLogoUrl = navLogoSource?.asset ? urlForImage(navLogoSource).height(64).url() : undefined;
-const footerLogoUrl = footerLogoSource?.asset ? urlForImage(footerLogoSource).height(80).url() : undefined;
 
-const homepageId = settings?.settings?.homepage?._ref;
-const mainLinks = settings?.mainNavigation?.links ?? [];
-const footerLinks = settings?.footer?.links ?? [];
-const legalLinks = settings?.footer?.legalLinks ?? [];
-const footerCopyright = settings?.footer?.copyright;
-const socials = settings?.socials?.items ?? [];
 
-// Tracking
-const tracking = settings?.tracking;
-const trackingProvider = tracking?.provider;
-const trackingId = tracking?.measurementId;
 
-// Organization JSON-LD
-const org = settings?.organization;
-const orgJsonLd = org?.name ? JSON.stringify({
-	"@context": "https://schema.org",
-	"@type": "Organization",
-	"name": org.name,
-	...(org.url && { "url": org.url }),
-	...(org.logo?.asset && { "logo": urlForImage(org.logo).width(600).url() }),
-	...(org.email && { "email": org.email }),
-	...(org.phone && { "telephone": org.phone }),
-	...(socials.length > 0 && { "sameAs": socials.map((s: any) => s.url) }),
-	...(org.address && {
-		"address": {
-			"@type": "PostalAddress",
-			...(org.address.street && { "streetAddress": org.address.street }),
-			...(org.address.postalCode && { "postalCode": org.address.postalCode }),
-			...(org.address.city && { "addressLocality": org.address.city }),
-			...(org.address.country && { "addressCountry": org.address.country }),
-		},
-	}),
-}) : null;
 ---
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" href={faviconUrl} />
 		<meta name="generator" content={Astro.generator} />
 		{description && <meta name="description" content={description} />}
-		{keywords && <meta name="keywords" content={keywords} />}
 		{!indexing && <meta name="robots" content="noindex, nofollow" />}
-		<title>{title}</title>
-		{orgJsonLd && <script is:inline type="application/ld+json" set:html={orgJsonLd} />}
-		{trackingProvider === 'ga4' && trackingId && (
-			<Fragment>
-				<script is:inline src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`} async></script>
-				<script is:inline define:vars={{ trackingId }}>
-					window.dataLayer = window.dataLayer || [];
-					function gtag(){dataLayer.push(arguments);}
-					gtag('js', new Date());
-					gtag('config', trackingId);
-				</script>
-			</Fragment>
-		)}
-		{trackingProvider === 'gtm' && trackingId && (
-			<script is:inline define:vars={{ trackingId }}>
-				(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-				})(window,document,'script','dataLayer',trackingId);
-			</script>
-		)}
+		<title>{pageTitle} | {title}</title>
 	</head>
 	<body class="global">
-		{trackingProvider === 'gtm' && trackingId && (
-			<noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${trackingId}`} height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		)}
-		<Navigation siteTitle={siteTitle} logoUrl={navLogoUrl} links={mainLinks} homepageId={homepageId} />
+		<Navigation></Navigation>
 		<main>
 			<slot />
 		</main>
-		<Footer
-			siteTitle={siteTitle}
-			logoUrl={footerLogoUrl}
-			links={footerLinks}
-			legalLinks={legalLinks}
-			copyright={footerCopyright}
-			socials={socials}
-			homepageId={homepageId}
-		/>
+		<Footer></Footer>
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-
-	body {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-	}
-</style>

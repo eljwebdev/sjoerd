@@ -1,11 +1,9 @@
-import { DocumentIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
-export const pageType = defineType({
-  name: "page",
-  title: "Page",
+export const infoPageType = defineType({
+  name: "infoPage",
   type: "document",
-  icon: DocumentIcon,
+  title: "Info Page",
   groups: [
     { name: 'content', title: 'Inhoud', default: true },
     { name: 'seo', title: 'SEO' },
@@ -16,27 +14,6 @@ export const pageType = defineType({
       type: "string",
       group: 'content',
     }),
-    defineField({
-      name: "slug",
-      type: "slug",
-      options: {
-        source: "title",
-      },
-      group: 'seo',
-    }),
-    defineField({
-      name: "content",
-      type: "pageBuilder",
-      group: 'content',
-    }),
-    // defineField({
-    //   name: "mainImage",
-    //   type: "image",
-    //   options: {
-    //     hotspot: true,
-    //   },
-    //   group: 'content',
-    // }),
     defineField({
       name: "metaTitle",
       title: "Meta Titel",
@@ -64,7 +41,6 @@ export const pageType = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "slug.current",
     },
   },
 });

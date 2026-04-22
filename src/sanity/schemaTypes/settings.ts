@@ -2,8 +2,6 @@
 import { defineField, defineType } from "sanity";
 import {CogIcon} from '@sanity/icons'
 
-// import { customLinkType } from "./customLink";
-
 export const settingsType = defineType({
   title: "Settings",
   name: "settings",
@@ -43,7 +41,7 @@ export const settingsType = defineType({
           name: 'homepage',
           title: 'Homepage',
           description: 'Selecteer welke pagina als homepage wordt weergegeven',
-          to: [{ type: 'page' }],
+          to: [{ type: 'homePage' }],
         }),
       ],
     }),
