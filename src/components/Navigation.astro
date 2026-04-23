@@ -6,46 +6,50 @@ const { menu } = await sanityClient.fetch(
 ) ?? {};
 
 const path = Astro.url.pathname;
+let navClass = '';
 let homeClass = '';
 let infoClass = '';
 
 if (path === '/') {
+  navClass = 'current-home';
   homeClass = 'current';
 }
 
 if (path === '/info') {
+  navClass = 'current-info';
   infoClass = 'current';
 }
 
 ---
-<nav class:list={['nav', 'nav-original']}>
+<nav class:list={['nav', 'nav-original', navClass]}>
   <div class="nav--inner container--margin-normal container--grid">
     <div class="left">
-      <a class="link-menu-title" href="/">{menu?.menuTitle}</a>
+      <a class="logo-link" href="/">{menu?.menuTitle}</a>
       <p class="nav__tagline--mob1 mobile">{menu?.tagLineMob1}</p>
       <p class="nav__tagline--mob2 mobile">{menu?.tagLineMob2}</p>
     </div>
     <div class="right container--grid-ninecols">
       <div class="col col-2">
-        <a class:list={['hover-wrapper', 'page-link', homeClass]} href="/">
+        <a class:list={['hover-wrapper', 'page-link', homeClass, 'work-link']} href="/">
           <span class="visible-text">{menu?.workTitle}</span>
+          <span class="hover-text c-white">{menu?.workTextHover}</span>
         </a>
         <div class:list={['nav__tagline', 'desktop', 'big-text', 'hover-wrapper', infoClass]}>
           <p class="visible-text">{menu?.tagLine}</p>
-          <span class="hover-text c-white">{menu?.tagLineHover}</span>
+          <span class="hover-text">{menu?.tagLineHover}</span>
         </div>
       </div>
       <div class="col col-3">
-        <a class:list={['hover-wrapper', 'page-link', infoClass]} href="/info">
+        <a class:list={['hover-wrapper', 'page-link', infoClass, 'info-link']} href="/info">
           <span class="visible-text">{menu?.infoText}</span>
           <span class="hover-text c-white">{menu?.infoTextHover}</span>
         </a>
       </div>
       <div class="col col-4">
-        <a class="hover-wrapper" href="/contact">
+        <button class="hover-wrapper copy-button">
           <span class="visible-text">{menu?.contactText}</span>
           <span class="hover-text c-white">{menu?.contactTextHover}</span>
-        </a>
+        </button>
       </div>
     </div>
 </nav>

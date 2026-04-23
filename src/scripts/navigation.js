@@ -25,3 +25,16 @@ if (window.innerWidth < BREAKPOINT) {
 
 applyLayout();
 window.addEventListener('resize', applyLayout);
+
+const button = document.querySelector('.copy-button');
+if (button) {
+button.addEventListener('click', () => {
+    const email = 'info@sjoerdderidder.org';
+    navigator.clipboard.writeText(email).then(() => {
+        console.log('Email copied to clipboard');
+        
+    }).catch(err => {
+        console.error('Failed to copy email: ', err);
+    });
+});
+}

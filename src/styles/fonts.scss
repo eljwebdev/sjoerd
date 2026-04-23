@@ -34,7 +34,7 @@
   }
 }
 
-.big-text, .big-text p, .big-text a, .big-text ul li {
+.big-text, .big-text p, .big-text a, .big-text ul li, .big-text button {
   @include big-text();
 }
 
@@ -100,13 +100,15 @@ ul, ol {
 //   text-decoration: underline;
 // }
 
-/** menu fonts **/
+/* menu */
 
-.menu {
-  .menu-item {
-    a {
+.nav {
+  button {
+    span {
       @include big-text();
     }
   }
 }
+
+
 

@@ -11,7 +11,13 @@
         position: static;
     }
 
-    .link-menu-title {
+    .logo-link {
+        transition: all 0.6s ease;
+        @include responsiveMin($md){
+            &:hover {
+                color: var(--c-white);
+            }
+        }
         @include responsive($md) {
         color: var(--c-white);
         }
@@ -19,41 +25,58 @@
 
     /* curent links & hovers */
 
-    @keyframes slideUp {
-        0% { transform: translateY(100%);}
-    }   
+    // @keyframes slideUp {
+    //     0% { transform: translateY(100%);}
+    // }   
 
-    .hover-wrapper:not(.current) {
-        overflow: hidden;
-        clip-path: inset(1px 1px 1px 1px);
-        position: relative;
-        display: flex;
-        
+    @include responsive($md) {
         .hover-text {
-            position: absolute;
-            top: 140%;
-            left: 0;
-            width: 150px;
+            display: none;
         }
+    }
 
-        .visible-text, .hover-text {
-            transition: all 0.4s ease;
-        }
-        
-        &.nav__tagline {
-            .hover-text {
-                width: 150%;
-            }
-        }
-
-        @include responsiveMin($md) {
+    @include responsiveMin($md) {
+        .hover-wrapper:not(.current) {
+            overflow: hidden;
+            clip-path: inset(1px 1px 1px 1px);
+            position: relative;
+            display: flex;
+            width: 200px;
+            
             &:hover {
                 .visible-text, .hover-text {
                     transform: translateY(-140%);
                 }
             }
+
+            .hover-text {
+                position: absolute;
+                top: 140%;
+                left: 0;
+                width: 150px;
+            }
+    
+            .visible-text, .hover-text {
+                transition: all 0.4s ease;
+            }
+            
+            &.nav__tagline {
+                width: 400px;
+                .visible-text, .hover-text {
+                    width: 400px;
+                }
+            }
+    
+        }
+        button.hover-wrapper {
+            width: 100%;
+            cursor: pointer;
+            .hover-text {
+                display: flex;
+            }
         }
     }
+
 
     .page-link.current {
         color: var(--c-white);
@@ -65,6 +88,9 @@
             width: 20px;
             height: 5px;
         }
+        .hover-text {
+            display: none;
+        }
     }
 
     /* --- */
@@ -73,12 +99,13 @@
         transition: opacity 0.6s ease;
         &.current {
             opacity: 0;
+            display: none;
         }
     }
 
     .mobile {
         @include responsiveMin($md){
-        display: none;
+        display: none !important;
         }
     }
 

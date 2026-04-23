@@ -64,6 +64,11 @@ export const settingsType = defineType({
         }),
         defineField({
           type: 'string',
+          name: 'workTextHover',
+          title: 'Work link hover text',
+        }),
+        defineField({
+          type: 'string',
           name: 'tagLine',
           title: 'Tagline visible',
         }),
