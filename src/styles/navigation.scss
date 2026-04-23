@@ -202,6 +202,49 @@
     }
 }
 
+.current-info {
+    // @include responsive(1150px){
+    //     .hover-wrapper:not(.current) {
+    //         &.nav__tagline {
+    //             display: none;
+    //         }
+    //     }
+    // }
+
+    @include responsiveMin(1150px){
+        .hover-wrapper:not(.current) {
+            &.work-link {
+                width: 350px;
+                .visible-text, .hover-text {
+                    width: 350px;
+                }
+            }
+        }
+    }
+
+    @include responsiveMin(1300px){
+        .hover-wrapper:not(.current) {
+            &.work-link {
+                width: 400px;
+                .visible-text, .hover-text {
+                    width: 400px;
+                }
+            }
+        }
+    }
+
+    @include responsiveMin(1600px){
+        .hover-wrapper:not(.current) {
+            &.work-link {
+                width: 500px;
+                .visible-text, .hover-text {
+                    width: 500px;
+                }
+            }
+        }
+    }
+}
+
 /* copy feedback animation */
 
 @keyframes dimAnimation {
