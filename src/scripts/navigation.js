@@ -30,9 +30,21 @@ const button = document.querySelector('.copy-button');
 if (button) {
 button.addEventListener('click', () => {
     const email = 'info@sjoerdderidder.org';
+    const currentLink = document.querySelector('.page-link.current');
+    const confirmation = document.querySelector('.copy-confirmation');
     navigator.clipboard.writeText(email).then(() => {
-        console.log('Email copied to clipboard');
-        
+        if (currentLink) {
+          currentLink.classList.add('dim-animation');
+          currentLink.addEventListener('animationend', () => {
+            currentLink.classList.remove('dim-animation');
+          }, { once: true });
+        }
+        if (confirmation) {
+          confirmation.classList.add('confirm-animation');
+          confirmation.addEventListener('animationend', () => {
+            confirmation.classList.remove('confirm-animation');
+          }, { once: true });
+        }
     }).catch(err => {
         console.error('Failed to copy email: ', err);
     });

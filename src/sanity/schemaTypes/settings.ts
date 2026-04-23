@@ -107,6 +107,11 @@ export const settingsType = defineType({
           name: 'contactTextHover',
           title: 'Contact text hover',
         }),
+        defineField({
+          type: 'string',
+          name: 'contactTextCopied',
+          title: 'Email copied confirmation text',
+        }),
       ],
     }),
     
