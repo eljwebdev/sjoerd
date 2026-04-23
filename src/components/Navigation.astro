@@ -12,8 +12,7 @@ const { menu, mailadres } = navData ?? {};
 
 
 
-// const path = Astro.url.pathname;
-const path = Astro.url.pathname.replace(/\/$/, '');
+const path = Astro.url.pathname;
 let navClass = '';
 let homeClass = '';
 let infoClass = '';
@@ -23,7 +22,7 @@ if (path === '/') {
   homeClass = 'current';
 }
 
-if (path === '/info') {
+if (path === '/info/') {
   navClass = 'current-info';
   infoClass = 'current';
 }
