@@ -12,7 +12,8 @@ const { menu, mailadres } = navData ?? {};
 
 
 
-const path = Astro.url.pathname;
+// const path = Astro.url.pathname;
+const path = Astro.url.pathname.replace(/\/$/, '');
 let navClass = '';
 let homeClass = '';
 let infoClass = '';
@@ -63,5 +64,6 @@ if (path === '/info') {
       </div>
     </div>
 </nav>
+
 
 <script src="../scripts/navigation.js"></script>
