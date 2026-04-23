@@ -6,6 +6,7 @@
     position: fixed;
     background-color: var(--c-black);
     color: var(--c-dim);
+    width: 100vw;
 
     @include responsive($md) {
         position: static;
@@ -59,13 +60,6 @@
             .visible-text, .hover-text {
                 transition: all 0.4s ease;
             }
-            
-            &.nav__tagline {
-                width: 400px;
-                .visible-text, .hover-text {
-                    width: 400px;
-                }
-            }
     
         }
         button.hover-wrapper {
@@ -73,6 +67,47 @@
             cursor: pointer;
             .hover-text {
                 display: flex;
+            }
+        }
+    }
+
+    @include responsive(1150px){
+        .hover-wrapper:not(.current) {
+            &.nav__tagline {
+                display: none;
+            }
+        }
+    }
+
+    @include responsiveMin(1150px){
+        .hover-wrapper:not(.current) {
+            &.nav__tagline {
+                width: 350px;
+                .visible-text, .hover-text {
+                    width: 350px;
+                }
+            }
+        }
+    }
+
+    @include responsiveMin(1300px){
+        .hover-wrapper:not(.current) {
+            &.nav__tagline {
+                width: 400px;
+                .visible-text, .hover-text {
+                    width: 400px;
+                }
+            }
+        }
+    }
+
+    @include responsiveMin(1600px){
+        .hover-wrapper:not(.current) {
+            &.nav__tagline {
+                width: 500px;
+                .visible-text, .hover-text {
+                    width: 500px;
+                }
             }
         }
     }
