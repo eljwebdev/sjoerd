@@ -26,10 +26,12 @@ if (window.innerWidth < BREAKPOINT) {
 applyLayout();
 window.addEventListener('resize', applyLayout);
 
+/* Copy email to clipboard with animation */
+
 const button = document.querySelector('.copy-button');
 if (button) {
 button.addEventListener('click', () => {
-    const email = 'info@sjoerdderidder.org';
+    const email = button.dataset.email;
     const currentLink = document.querySelector('.page-link.current');
     const confirmation = document.querySelector('.copy-confirmation');
     navigator.clipboard.writeText(email).then(() => {

@@ -1,9 +1,16 @@
 ---
 import { sanityClient } from 'sanity:client';
 
-const { menu } = await sanityClient.fetch(
-  `*[_type == "settings"][0]{ menu }`
-) ?? {};
+const navData = await sanityClient.fetch(
+  `*[_type == "settings"][0]{
+    menu,
+    "mailadres": settings.mailadres
+  }`
+);
+const { menu, mailadres } = navData ?? {};
+
+
+
 
 const path = Astro.url.pathname;
 let navClass = '';
@@ -49,7 +56,7 @@ if (path === '/info') {
         <div class="copy-confirmation big-text">
           <span class="copy-confirmation-text c-white">{menu?.contactTextCopied}</span>
         </div>
-        <button class="hover-wrapper copy-button">
+        <button class="hover-wrapper copy-button" data-email={mailadres}>
           <span class="visible-text">{menu?.contactText}</span>
           <span class="hover-text c-white">{menu?.contactTextHover}</span>
         </button>

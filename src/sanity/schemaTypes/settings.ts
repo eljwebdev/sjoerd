@@ -22,7 +22,7 @@ export const settingsType = defineType({
         }),
         defineField({
           type: 'string',
-          name: 'mailadres',
+          name: 'mailAdres',
           title: 'E-mailadres',
         }),
         defineField({
