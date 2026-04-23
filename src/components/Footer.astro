@@ -1,5 +1,29 @@
 ---
+import { sanityClient } from 'sanity:client';
+
+let response = await sanityClient.fetch(
+  `*[_type == "settings"][0]{
+    "mailAdres": settings.mailadres
+  }`
+);
+const mailadres = response?.mailAdres ?? '';
+
 ---
-<footer>
-  <p>&copy; {new Date().getFullYear()} Sjoerd. All rights reserved.</p>
+<footer class="container--margin-normal">
+  <div class="inner">
+    <a class="c-white big-text" href="mailto:{mailadres}">{mailadres}</a>
+    <p class="c-dim small-text lowercase">&copy; {new Date().getFullYear()} Sjoerd de Ridder. All rights reserved.</p>
+  </div>
 </footer>
+
+<style lang="scss">
+  footer {
+    .inner {
+      display: flex;
+      flex-direction: column;
+      gap:22px;
+      padding-top: 100px;
+      padding-bottom: 32px;
+    }
+  }
+</style>
