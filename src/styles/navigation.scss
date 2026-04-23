@@ -1,0 +1,159 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.nav {
+    text-transform: lowercase;
+    position: fixed;
+    background-color: var(--c-black);
+    color: var(--c-dim);
+
+    @include responsive($md) {
+        position: static;
+    }
+
+    .link-menu-title {
+        @include responsive($md) {
+        color: var(--c-white);
+        }
+    }
+
+    /* curent links & hovers */
+
+    @keyframes slideUp {
+        0% { transform: translateY(100%);}
+    }   
+
+    .hover-wrapper:not(.current) {
+        overflow: hidden;
+        clip-path: inset(1px 1px 1px 1px);
+        position: relative;
+        display: flex;
+        
+        .hover-text {
+            position: absolute;
+            top: 140%;
+            left: 0;
+            width: 150px;
+        }
+
+        .visible-text, .hover-text {
+            transition: all 0.4s ease;
+        }
+        
+        &.nav__tagline {
+            .hover-text {
+                width: 150%;
+            }
+        }
+
+        @include responsiveMin($md) {
+            &:hover {
+                .visible-text, .hover-text {
+                    transform: translateY(-140%);
+                }
+            }
+        }
+    }
+
+    .page-link.current {
+        color: var(--c-white);
+        display: flex;
+        gap: 6px;
+        .visible-text::after {
+            padding-left: 5px;
+            content: '↓';
+            width: 20px;
+            height: 5px;
+        }
+    }
+
+    /* --- */
+
+    .nav__tagline {
+        transition: opacity 0.6s ease;
+        &.current {
+            opacity: 0;
+        }
+    }
+
+    .mobile {
+        @include responsiveMin($md){
+        display: none;
+        }
+    }
+
+    .desktop {
+        display: none;
+        @include responsiveMin($md){
+        display: block;
+        }
+    }
+
+    .nav__tagline--mob1 {
+        padding-top: 3px;
+    }
+
+
+    /* grids */
+
+    .col {
+        align-self: center;
+    }
+
+    .left {
+        grid-column: 1 / 4;
+    }
+
+    .right {
+        grid-column: 4 / 13;
+
+        @include responsive($md) {
+        position: sticky;
+        top: 0;
+        grid-column: unset;
+        }
+
+        .col-2 {
+        grid-column: 1 / 6;
+        display: flex;
+        gap: 25px;
+        @include responsive($md) {
+            grid-column: 1;
+        }
+        }
+        .col-3 {
+        grid-column: 6 / 8;
+                @include responsive($md) {
+            grid-column: 2;
+        }
+        }
+        .col-4 {
+        grid-column: 8 / 10;
+                @include responsive($md) {
+            grid-column: 3;
+        }
+        }
+    }
+
+    /* other */ 
+
+    .nav--inner {
+        padding-top: 8px;
+        padding-bottom: 6px;
+        @include responsive($md) {
+        padding-top: 8px;
+        padding-bottom: 0px;
+        }
+    }
+
+}
+
+/* only on mobile */
+.nav-new {
+    position: sticky;
+    top: 0;
+    padding: 10px 12px 8px 12px;
+    .col {
+        align-self: center;
+    }
+}
