@@ -1,13 +1,53 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { sanityClient } from 'sanity:client';
+import Project from "../components/blocks/Project.astro";
 
 const homePage = await sanityClient.fetch(
   `*[_type == "homePage"][0]{
-  title, description
+    title, 
+    description, 
+    work[]{
+      imagesDesktop[]{
+        image{
+          asset->{
+            ...,
+            metadata{
+              dimensions{ width, height, aspectRatio }
+            }
+          },
+          hotspot,
+          crop
+        },
+        alt,
+        caption
+      },
+      imagesMobile[]{
+        image{
+          asset->{
+            ...,
+            metadata{
+              dimensions{ width, height, aspectRatio }
+            }
+          },
+          hotspot,
+          crop
+        },
+        alt,
+        caption
+      },
+      title,
+      subtitle,
+      textEntries[]{
+        label,
+        content
+      },
+      imageHeight,
+      textPosition
+    }
   }`
 );
-const { title, description } = homePage ?? {};
+const { title, description, work } = homePage ?? {};
 
 ---
 
@@ -15,16 +55,16 @@ const { title, description } = homePage ?? {};
 
 <Layout pageTitle={title} pageDescription={description}>
 
-
-
-
-<!-- <section>
-  <div style="height: 400vh; background: grey; padding-top: 100px;">
-    <h1>{title}</h1>
-
-    <p>Tekst</p>
-  </div>
-</section> -->
-
+{work?.map((project) => (
+  <Project
+    imagesDesktop={project.imagesDesktop}
+    imagesMobile={project.imagesMobile}
+    title={project.title}
+    subtitle={project.subtitle}
+    textEntries={project.textEntries}
+    imageHeight={project.imageHeight}
+    textPosition={project.textPosition}
+  />
+))}
 
 </Layout>

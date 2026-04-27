@@ -3,6 +3,7 @@ import '../styles/main.scss';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import { sanityClient } from 'sanity:client';
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   pageTitle: string;
@@ -40,8 +41,10 @@ const description = pageDescription || siteDescription;
 		{description && <meta property="og:description" content={description} />}
 		<meta property="og:url" content={Astro.url.href} />
 		<meta property="og:type" content="website" />
+		<ClientRouter />
+
 	</head>
-	<body class="global">
+	<body>
 		<Navigation></Navigation>
 		<main>
 			<slot />

@@ -1,0 +1,142 @@
+---
+import SanityImage from "../SanityImage.astro";
+import PortableText from "../../components/PortableText.astro";
+
+const {
+  imagesDesktop,
+  imagesMobile,
+  title,
+  subtitle,
+  textEntries,
+  imageHeight = "setting-height-normal",
+  textPosition = "setting-text-below",
+} = Astro.props;
+---
+
+<section class="section-project">
+  <div class={`section-project-inner ${textPosition}`}>
+    <div class={`images-desktop ${imageHeight}`}>
+      {imagesDesktop?.map((item: any) => (
+        <SanityImage image={item.image} alt={item.alt} />
+      ))}
+    </div>
+    <div class="images-mobile container--margin-normal">
+      {imagesMobile?.map((item: any) => (
+        <SanityImage image={item.image} alt={item.alt} />
+      ))}
+    </div>
+    <div class="texts container--margin-normal">
+      <div class="left">
+        <div class="titles">
+            {title && <h2>{title}</h2>}
+            {subtitle && <p class="subtitle c-dim">{subtitle}</p>}
+        </div>
+        <div class="show-button-container">
+            <button class="show-button"><span class="lowercase">View all</span></button>
+        </div>
+      </div>
+      <div class="right">
+        <ul class="text-entry">
+            {textEntries?.map((entry: any) => (
+                <li>
+                {entry.label && <span class="label small-text uppercase">{entry.label}</span>}
+                {entry.content && <PortableText value={entry.content} />}
+                </li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+    .images-mobile {
+        @include responsiveMin($md){
+            display: none;
+        }
+        @include responsive($md){
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
+    .images-desktop {
+        overflow-x: scroll;
+        display: flex;
+        margin-left: var(--padding-horizontal);
+        @include responsive($md){
+            display: none;
+        }
+        &.settings-height-normal {
+            border: solid 1px red;
+            :global(.image) {
+                height: 400px;
+            }
+        }
+        :global(.image) {
+            @include responsive($md){
+                width: 100%;
+            }
+        }
+    }
+    .texts {
+
+        @include responsive($md){
+            display: flex;
+            flex-direction: column;
+            .left {
+                order: 1;
+                display: flex;
+                justify-content: space-between;
+                padding-top: 24px;
+                .titles {
+                    max-width: 70%;
+                }
+                .show-button-container {
+                    .show-button {
+                        display: flex;
+                        padding-right: 10px;
+                        span {
+                            text-decoration: underline;
+                            text-underline-offset: 3px;
+                            text-decoration-thickness: 1px;
+                        }
+                        &::after {
+                            content: "↑";
+                            display: block;
+                            width: 5px;
+                            height: 5px;
+                            margin-left: 5px;
+                        }
+                    }
+                }
+            }
+            .right {
+                order: 0;
+                .text-entry {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    padding-bottom: 32px;
+                    padding-top: 32px;
+                    margin-top: 12px;
+                    li {
+                        display: grid;
+                        grid-template-columns: repeat(12, 1fr);
+                        gap: 12px;
+                        span {
+                            grid-column: 1 / 3;
+                        }
+                        :global(.portable-text-container) {
+                            grid-column: 3 / 10;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<script>
+
+</script>

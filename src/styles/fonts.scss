@@ -55,6 +55,13 @@
   @include small-text();
 }
 
+.portable-text-container {
+  p, a {
+    @include small-text();
+    text-transform: lowercase;
+  }
+}
+
 .uppercase {
   text-transform: uppercase;
 }

@@ -1,10 +1,11 @@
 ---
+import { fade } from "astro:transitions";
 import { sanityClient } from 'sanity:client';
 
 const navData = await sanityClient.fetch(
   `*[_type == "settings"][0]{
     menu,
-    "mailadres": settings.mailadres
+    "mailadres": settings.mailAdres
   }`
 );
 const { menu, mailadres } = navData ?? {};
@@ -22,13 +23,13 @@ if (path === '/') {
   homeClass = 'current';
 }
 
-if (path === '/info/') {
+if (path === '/info') {
   navClass = 'current-info';
   infoClass = 'current';
 }
 
 ---
-<nav class:list={['nav', 'nav-original', navClass]}>
+<nav class:list={['nav', 'nav-original', navClass]} transition:animate={fade({ duration: "0.8s" })}>
   <div class="nav--inner container--margin-normal container--grid">
     <div class="left">
       <a class="logo-link" href="/">{menu?.menuTitle}</a>
@@ -64,5 +65,64 @@ if (path === '/info/') {
     </div>
 </nav>
 
+<script is:inline>
+    // @ts-nocheck
+  document.addEventListener("astro:page-load", () => {
 
-<script src="../scripts/navigation.js"></script>
+    const BREAKPOINT = 835;
+
+    const originalNav = document.querySelector('.nav-original');
+    const inner = originalNav.querySelector('.nav--inner');
+    const right = originalNav.querySelector('.right');
+
+    let mobileNav = null;
+
+    function applyLayout() {
+    if (window.innerWidth < BREAKPOINT) {
+        if (!mobileNav) {
+        mobileNav = document.createElement('nav');
+        mobileNav.className = originalNav.className + ' nav-new';
+        originalNav.insertAdjacentElement('afterend', mobileNav);
+        }
+        mobileNav.appendChild(right);
+    } else {
+        if (mobileNav) {
+        inner.appendChild(right);
+        mobileNav.remove();
+        mobileNav = null;
+        }
+    }
+    }
+
+    applyLayout();
+    window.addEventListener('resize', applyLayout);
+
+    /* Copy email to clipboard with animation */
+
+    const button = document.querySelector('.copy-button');
+    if (button) {
+    button.addEventListener('click', () => {
+        const email = button.dataset.email;
+        const currentLink = document.querySelector('.page-link.current');
+        const confirmation = document.querySelector('.copy-confirmation');
+        navigator.clipboard.writeText(email).then(() => {
+            if (currentLink) {
+              currentLink.classList.add('dim-animation');
+              currentLink.addEventListener('animationend', () => {
+                currentLink.classList.remove('dim-animation');
+              }, { once: true });
+            }
+            if (confirmation) {
+              confirmation.classList.add('confirm-animation');
+              confirmation.addEventListener('animationend', () => {
+                confirmation.classList.remove('confirm-animation');
+              }, { once: true });
+            }
+        }).catch(err => {
+            console.error('Failed to copy email: ', err);
+        });
+    });
+    }
+
+  });
+</script>

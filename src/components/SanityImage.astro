@@ -1,47 +1,16 @@
 ---
-import { Image } from "@unpic/astro";
-import { urlForImage } from "../sanity/lib/url-for-image";
+// src/components/SanityImage.astro
+import { urlFor } from '../sanity/lib/image'
 
 interface Props {
-  image: any;
-  alt?: string;
-  width?: number;
-  height?: number;
-  layout?: "constrained" | "fullWidth" | "fixed";
-  priority?: boolean;
-  class?: string;
-  aspectRatio?: number;
+  image: any
+  alt: string
 }
 
-const {
-  image,
-  alt = "",
-  width = 800,
-  height,
-  layout = "constrained",
-  priority = false,
-  class: className,
-  aspectRatio,
-} = Astro.props;
-
-// Generate the base Sanity CDN URL - unpic will handle format optimization
-const imageUrl = image ? urlForImage(image).url() : null;
-
-// Get dimensions if not provided
-const imageWidth = width || image?.asset?.metadata?.dimensions?.width || 800;
-const imageHeight = height || image?.asset?.metadata?.dimensions?.height;
-const computedAspectRatio = aspectRatio || (imageWidth && imageHeight ? imageWidth / imageHeight : undefined);
+const { image, alt } = Astro.props
+const width = image?.asset?.metadata?.dimensions?.width
+const height = image?.asset?.metadata?.dimensions?.height
+const url = urlFor(image).auto('format').url()
 ---
 
-{imageUrl && (
-  <Image
-    src={imageUrl}
-    width={imageWidth}
-    height={imageHeight}
-    alt={alt}
-    layout={layout}
-    priority={priority}
-    aspectRatio={computedAspectRatio}
-    class={className}
-  />
-)}
+<img class="image" src={url} alt={alt} width={width} height={height} loading="lazy" />

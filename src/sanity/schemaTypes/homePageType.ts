@@ -15,6 +15,11 @@ groups: [
       group: 'content',
     }),
     defineField({
+      name: "work",
+      type: "work",
+      group: 'content',
+    }),
+    defineField({
       name: "metaTitle",
       title: "Meta Titel",
       type: "string",

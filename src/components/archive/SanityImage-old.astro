@@ -1,0 +1,43 @@
+---
+import { Image } from "@unpic/astro";
+import { urlForImage } from "../sanity/lib/url-for-image";
+
+interface Props {
+  image: any;
+  alt?: string;
+  width?: number;
+  height?: number;
+  layout?: "constrained" | "fullWidth" | "fixed";
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  image,
+  alt = "",
+  width = 800,
+  height,
+  layout = "constrained",
+  priority = false,
+  class: className,
+} = Astro.props;
+
+// Generate the base Sanity CDN URL - unpic will handle format optimization
+const imageUrl = image ? urlForImage(image).url() : null;
+
+// Get dimensions if not provided
+const imageWidth = width || image?.asset?.metadata?.dimensions?.width || 800;
+const imageHeight = height || image?.asset?.metadata?.dimensions?.height;
+---
+
+{imageUrl && (
+  <Image
+    src={imageUrl}
+    width={imageWidth}
+    height={imageHeight}
+    alt={alt}
+    layout={layout}
+    priority={priority}
+    class={className}
+  />
+)}

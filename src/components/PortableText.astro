@@ -1,15 +1,15 @@
 ---
-// ./src/components/PortableText.astro
 import { PortableText as PortableTextInternal } from 'astro-portabletext'
-import PortableTextImage from "./PortableTextImage.astro";
 
-const { portableText } = Astro.props;
+const { value } = Astro.props
 
-const components = {
-  type: {
-    image: PortableTextImage,
-  }
-};
+/* filter out empty blocks to prevent rendering empty <p> tags */
+const filtered = value?.filter((block: any) => {
+  if (block._type !== 'block') return true
+  return block.children?.some((child: any) => child.text?.trim() !== '')
+})
 ---
 
-<PortableTextInternal value={portableText} components={components} />
+<div class="portable-text-container">
+  <PortableTextInternal value={filtered} />
+</div>

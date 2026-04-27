@@ -136,19 +136,26 @@ ul a {
 
 .section-project:first-of-type {
     margin-top: calc(96px + 40px);
+    @include responsive($md){
+        margin-top: 0px;
+    }
 }
 
 .section-project:not(:first-of-type) {
     margin-top: 256px;
 }
 
-.global {
+body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 
     main {
         flex: 1;
+        padding-top: 42px;
+        @include responsive ($md) {
+            padding-top: 0;
+        }
     }
 }
 
