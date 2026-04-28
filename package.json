@@ -22,6 +22,7 @@
     "astro-pagefind": "^1.8.5",
     "astro-portabletext": "^0.11.4",
     "autoprefixer": "^10.4.21",
+    "gsap": "^3.15.0",
     "postcss": "^8.5.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -29,6 +30,7 @@
     "resend": "^6.9.2",
     "sanity": "^5.9.0",
     "sass": "^1.93.2",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "swiper": "^12.1.3"
   }
 }

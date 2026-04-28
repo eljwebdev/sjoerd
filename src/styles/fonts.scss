@@ -103,10 +103,30 @@ ul, ol {
   }
 }
 
-// a, a:hover {
-//   text-decoration: underline;
-// }
-
+.portable-text-container {
+  a, a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 0.5px;
+    text-underline-offset: 2px;
+    display: inline-flex;
+    align-items: center;
+  }
+  a::after {
+    content: "";
+    background-image: url(/icons/arrow-diagonal.svg);
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 5px;
+    @include responsive($md){
+        width: 5px;
+        height: 5px;
+        margin-left: 4px;
+    }
+  }
+}
 /* menu */
 
 .nav {
