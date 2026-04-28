@@ -13,10 +13,13 @@ const {
   imageHeight = "setting-height-normal",
   textPosition = "setting-text-below",
 } = Astro.props;
+
 ---
 
 <section class="section-project">
+
   <div class={`section-project-inner ${textPosition}`}>
+
     <div class={`images-desktop ${imageHeight}`}>
         <div class="images-desktop-inner"> 
             {imagesDesktop?.map((item: any) => (
@@ -27,11 +30,13 @@ const {
             ))}
         </div>
     </div>
+
     <div class="images-mobile container--margin-normal">
       {imagesMobile?.map((item: any) => (
         <SanityImage image={item.image} alt={item.alt} />
       ))}
     </div>
+
     <div class="texts-container">
         <div class="titles">
             <div class="titles-inner">
@@ -53,13 +58,15 @@ const {
             </ul>
         </div>
         <div class="numbers">
-            <p>1 / 9</p>
+            <p><span id="current-index">1</span><span class="c-dim">—</span><span class="c-dim"id="total-count">9</span></p>
         </div>
     </div>
   </div>
 </section>
 
 <style lang="scss">
+
+    /* DEFAULTS FOR ALL LAYOUTS */
 
     .images-mobile {
         @include responsiveMin($md){
@@ -82,44 +89,56 @@ const {
     }
 
     .images-desktop {
-        overflow: hidden;
-        margin-left: var(--padding-horizontal);
+        overflow-y: hidden;
+        overflow-x: scroll;
         @include responsive($md){
             display: none;
         }
+        :global(.image-wrapper) {
+            height: clamp(500px, 30.36vw + 246.8px, 1024px);
+            overflow: hidden;
+            @include responsiveMin($md){
+                min-width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 16px) )  / 12) * 8 + (7 * 16px) );
+            }
+            @include responsiveMin($xl){
+                min-width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 8 + (7 * 32px) );
+            }
+        }
+
+        // :global(.image-wrapper.small){
+        //     min-width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 3 + (4 * 32px) );
+        // }
+        // :global(.image-wrapper.medium){
+        //     min-width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 6 + (5 * 32px) );
+        // }
+
+
+        :global(.image) {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+        &.settings-height-small {
+            :global(.image-wrapper) {
+                height: clamp(500px, 18.2vw + 348px, 814px);            
+            }
+        }
         .images-desktop-inner {
             display: flex;
-            // gap: 12px;
-        }
-        &.settings-height-normal {
-            :global(.image-wrapper) {
-                height: clamp(500px, 30.36vw + 246.8px, 1024px);
-                min-width: calc((100vw - (2 * var(--padding-horizontal))));
-                width: calc((100vw - (2 * var(--padding-horizontal))));
-                overflow: hidden;
-            }
-            :global(.image-wrapper.small){
-                aspect-ratio: 1 / 8;
-            }
-            :global(.image-wrapper.medium){
-                aspect-ratio: 1 / 8;
-            }
-            :global(.image-wrapper.large){
-                aspect-ratio: 1 / 8;
-            }
-            :global(.image) {
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
+            gap: 16px;
+            @include responsiveMin($xl) {
+                gap: 32px;
             }
         }
     }
-
 
     .texts-container {
         @include responsive($md){
             display: flex;
             flex-direction: column;
+        }
+        @include responsiveMin($md){
+            padding-top: 32px;
         }
 
         .titles {
@@ -178,31 +197,31 @@ const {
             .text-entry {
                 display: flex;
                 flex-direction: column;
-                gap: 12px;
-                padding-bottom: 32px;
-                padding-top: 32px;
-                margin-top: 12px;
+                gap: 14px;
                 
                 @include responsive($md){
-                
+                    gap: 12px;
+                    padding-bottom: 32px;
+                    padding-top: 32px;
+                    margin-top: 12px;
                 }
                 li {
                     display: grid;
                     grid-template-columns: repeat(12, 1fr);
-                    gap: 12px;
+                    gap: 0px;
                     @include responsive($md){
                 
                     }
                     span {
-                        grid-column: 1 / 3;
+                        grid-column: 1 / 4;                    
                         @include responsive($md){
-                    
+                            grid-column: 1 / 3;                    
                         }
                     }
                     :global(.portable-text-container) {
-                        grid-column: 3 / 10;
+                        grid-column: 4 / 13;
                         @include responsive($md){
-                    
+                            grid-column: 3 / 10;
                         }
                     }
                 }
@@ -216,63 +235,170 @@ const {
         }
     }
 
+    /* LAYOUT: TEXT BELOW */
     .section-project-inner.settings-text-below {
+        .images-desktop {
+            @include responsiveMin($md){
+                padding-left: var(--padding-horizontal);
+            }
+        }
         .texts-container {
             @include responsiveMin($md){
+                padding-left: var(--padding-horizontal);
+                padding-right: var(--padding-horizontal);
                 display: grid;
                 grid-template-columns: repeat(12, 1fr);
                 gap: 16px;
+                .titles {
+                    grid-column: 1 / 4;
+                }
+                .info {
+                    grid-column: 9 / 12;    
+                }
+                .numbers {
+                    grid-column: 12 / 13;
+                    justify-self: end;
+                }
             }
-
-            @include responsiveMin(1440px) {
+            @include responsiveMin($xl) {
                 gap: 32px;
             }
-            .titles {
-                grid-column: 1 / 4;
-            }
-            .info {
-                grid-column: 9 / 12;    
-            }
-            .numbers {
-                grid-column: 12 / 13;
-                justify-self: end;
-            }
         }
     }
 
+    /* Mixin for default side text styling with 3 cols above $xl */
+    @mixin textscontainerSide {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-flow: dense;
+        gap: 16px;
+        .titles {
+            grid-column: 1 / 3;
+            grid-row: 1;
+            align-self: end;
+        }
+        .info {
+            grid-column: 1 / 3;
+            grid-row: 2;
+            align-self: start;
+        }
+        .numbers {
+            grid-column: 3 / 4;
+            grid-row: 1;
+            align-self: end;
+            justify-self: end;
+        }
+    }
+
+    /* LAYOUT: TEXT LEFT */
     .section-project-inner.settings-text-left {
-        @include responsiveMin($md){
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 16px;
+
+        .images-desktop {
+            @include responsiveMin($md){
+                padding-left: var(--padding-horizontal);
+            }
+            @include responsiveMin($xl){
+                padding-left: 0;
+            }
         }
 
-        @include responsiveMin(1440px) {
-            gap: 32px;
-        }
-        .images-desktop {
-            grid-column: 1 / 8;
-        }
+        /* On inbetween md and xl, on all settings text goes below */
         .texts-container {
-            grid-column: 8 / 13;
+            @include responsiveMin($md){
+                padding-left: var(--padding-horizontal);
+                padding-right: var(--padding-horizontal);
+                display: grid;
+                grid-template-columns: repeat(12, 1fr);
+                gap: 16px;
+                .titles {
+                    grid-column: 1 / 4;
+                }
+                .info {
+                    grid-column: 9 / 12;    
+                }
+                .numbers {
+                    grid-column: 12 / 13;
+                    justify-self: end;
+                }
+            }
+            @include responsiveMin($xl) {
+                gap: 32px;
+            }
+        }
+        /* Above xl, text on the left side */
+        @include responsiveMin($xl){
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-flow: dense;
+            gap: 32px;
+            .images-desktop {
+                grid-column: 4 / 13;
+            }
+            .texts-container {
+                @include textscontainerSide();
+                grid-column: 1 / 4;
+                padding-left: var(--padding-horizontal);
+                padding-right: 0;
+            }
         }
     }
 
+    /* LAYOUT: TEXT RIGHT */
     .section-project-inner.settings-text-right {
-        @include responsiveMin($md){
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 16px;
+
+        .images-desktop {
+            @include responsiveMin($md){
+                padding-left: var(--padding-horizontal);
+            }
+            @include responsiveMin($xl){
+                padding-left: 0;
+            }
         }
 
-        @include responsiveMin(1440px) {
-            gap: 32px;
-        }
-        .images-desktop {
-            grid-column: 8 / 13;
-        }
+        /* On inbetween md and xl, on all settings text goes below */
         .texts-container {
-            grid-column: 1 / 8;
+            @include responsiveMin($md){
+                padding-left: var(--padding-horizontal);
+                padding-right: var(--padding-horizontal);
+                display: grid;
+                grid-template-columns: repeat(12, 1fr);
+                gap: 16px;
+                .titles {
+                    grid-column: 1 / 4;
+                }
+                .info {
+                    grid-column: 9 / 12;    
+                }
+                .numbers {
+                    grid-column: 12 / 13;
+                    justify-self: end;
+                }
+            }
+            @include responsiveMin($xl) {
+                gap: 32px;
+            }
+        }
+
+        /* Above xl, text on the right side */
+        @include responsiveMin($xl){
+            padding-right: var(--padding-horizontal);
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-flow: dense;
+            gap: 32px;
+
+            .images-desktop {
+                // padding-left: var(--padding-horizontal);
+                grid-column: 1 / 10;
+            }
+            
+            .texts-container {
+                @include textscontainerSide();
+                grid-column: 10 / 13;
+                gap: 32px;
+                padding-right: var(--padding-horizontal);
+                padding-left: 0;
+            }
         }
     }
 
@@ -284,6 +410,7 @@ const {
     // import { FreeMode } from "swiper/modules";
 
     document.addEventListener("astro:page-load", () => {
+
         const sections = document.querySelectorAll('.section-project');
         sections.forEach(section => {
             // const swiperEl = section.querySelector('.swiper');
@@ -327,7 +454,22 @@ const {
                 }
             });
         });
+
+        function syncNumbersHeight() {
+            if (window.innerWidth <= 835) return;
+            document.querySelectorAll('.section-project-inner.settings-text-left, .section-project-inner.settings-text-right').forEach(inner => {
+                const titles = inner.querySelector('.titles');
+                const numbers = inner.querySelector('.numbers');
+                if (titles && numbers) {
+                    numbers.style.height = titles.offsetHeight + 'px';
+                }
+            });
+        }
+        syncNumbersHeight();
+        window.addEventListener('resize', syncNumbersHeight);
+
     });
+
 
 
 </script>
