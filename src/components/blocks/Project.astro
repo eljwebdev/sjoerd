@@ -57,7 +57,13 @@ const {
         @include responsive($md){
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 12px;  
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.6s ease;
+            &.expanded {
+                max-height: 500vh;
+            }
         }
     }
     .images-desktop {
@@ -81,7 +87,7 @@ const {
     }
     .texts {
 
-        @include responsive($md){
+        // @include responsive($md){
             display: flex;
             flex-direction: column;
             .left {
@@ -113,6 +119,9 @@ const {
             }
             .right {
                 order: 0;
+                max-height: 1px;
+                overflow: hidden;
+                transition: max-height 0.4s ease;
                 .text-entry {
                     display: flex;
                     flex-direction: column;
@@ -132,11 +141,30 @@ const {
                         }
                     }
                 }
+                &.expanded {
+                    max-height: 100vh;
+                }
             }
-        }
+        // }
     }
 </style>
 
 <script>
+    // @ts-nocheck
+    const showButtons = document.querySelectorAll('.show-button');
+    showButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const parent = button.closest('.section-project-inner');
+            const imagesMobile = parent.querySelector('.images-mobile');
+            const textDiv = parent.querySelector('.right');
+            if (imagesMobile.classList.contains('expanded') && textDiv.classList.contains('expanded')) {
+                imagesMobile.classList.remove('expanded');
+                textDiv.classList.remove('expanded');
+            } else {
+                imagesMobile.classList.add('expanded');
+                textDiv.classList.add('expanded');
+            }
+        });
+    });
 
 </script>
