@@ -136,6 +136,8 @@ const {
         @include responsive($md){
             display: flex;
             flex-direction: column;
+            padding-left: var(--padding-horizontal);
+            padding-right: var(--padding-horizontal);
         }
         @include responsiveMin($md){
             padding-top: 32px;
@@ -161,7 +163,6 @@ const {
                     display: block;
                     .show-button {
                         display: flex;
-                        padding-right: 10px;
                         span {
                             text-decoration: underline;
                             text-underline-offset: 3px;
@@ -439,7 +440,7 @@ const {
             button.addEventListener('click', () => {
                 const parent = button.closest('.section-project-inner');
                 const imagesMobile = parent.querySelector('.images-mobile');
-                const textDiv = parent.querySelector('.right');
+                const textDiv = parent.querySelector('.info');
                 const buttonText = button.querySelector('span');
                 if (imagesMobile.classList.contains('expanded') && textDiv.classList.contains('expanded') && button.classList.contains('expanded')) {
                     imagesMobile.classList.remove('expanded');
