@@ -1,11 +1,12 @@
-import { defineField, defineType } from "sanity";
+import { defineField, defineType, defineArrayMember } from "sanity";
+
 
 export const projectBlockType = defineType({
     name: "projectBlock",
     title: "Project Block",
     type: "object",
     groups: [
-        { name: "images", title: "Images" },
+        { name: "images", title: "Media" },
         { name: "text", title: "Text" },
         { name: "settings", title: "Settings" },
     ],
@@ -13,17 +14,23 @@ export const projectBlockType = defineType({
         // Images group
         defineField({
             name: "imagesDesktop",
-            title: "Images Desktop",
+            title: "Media Desktop",
             type: "array",
             group: "images",
-            of: [{ type: "imageBlock" }],
+            of: [
+                defineArrayMember({ type: "imageBlock" }),
+                defineArrayMember({ type: "videoBlock" }),
+            ],
         }),
         defineField({
             name: "imagesMobile",
-            title: "Images Mobile",
+            title: "Media Mobile",
             type: "array",
             group: "images",
-            of: [{ type: "imageBlock" }],
+            of: [
+                defineArrayMember({ type: "imageBlock" }),
+                defineArrayMember({ type: "videoBlock" }),
+            ],
         }),
 
         // Text group

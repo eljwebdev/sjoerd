@@ -8,6 +8,12 @@ export const imageBlockType = defineType({
   icon: ImageIcon,
   fields: [
     defineField({
+      name: 'myRangeField',
+      title: 'Media width in columns (min 3 - max 8)',
+      type: 'number',
+      validation: (rule) => rule.min(3).max(8),
+    }),
+    defineField({
       name: "image",
       type: "image",
       options: {
@@ -36,7 +42,7 @@ export const imageBlockType = defineType({
     prepare({ alt, media }) {
       return {
         title: alt || "Untitled",
-        subtitle: "Image Block",
+        subtitle: "image",
         media: media ?? ImageIcon,
       };
     },

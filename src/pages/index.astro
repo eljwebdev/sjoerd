@@ -9,32 +9,74 @@ const homePage = await sanityClient.fetch(
     description, 
     work[]{
       imagesDesktop[]{
-        image{
-          asset->{
-            ...,
-            metadata{
-              dimensions{ width, height, aspectRatio }
-            }
+        _type,
+        _type == "imageBlock" => {
+          myRangeField,
+          image{
+            asset->{
+              ...,
+              metadata{
+                dimensions{ width, height, aspectRatio }
+              }
+            },
+            hotspot,
+            crop
           },
-          hotspot,
-          crop
+          alt,
+          caption
         },
-        alt,
-        caption
+        _type == "videoBlock" => {
+          myRangeField,
+          video{ asset->{ url } },
+          videoFallback{ asset->{ url } },
+          posterImage{
+            asset->{
+              ...,
+              metadata{
+                dimensions{ width, height, aspectRatio }
+              }
+            },
+            hotspot,
+            crop
+          },
+          description,
+          hasAudio
+        }
       },
       imagesMobile[]{
-        image{
-          asset->{
-            ...,
-            metadata{
-              dimensions{ width, height, aspectRatio }
-            }
+        _type,
+        _type == "imageBlock" => {
+          myRangeField,
+          image{
+            asset->{
+              ...,
+              metadata{
+                dimensions{ width, height, aspectRatio }
+              }
+            },
+            hotspot,
+            crop
           },
-          hotspot,
-          crop
+          alt,
+          caption
         },
-        alt,
-        caption
+        _type == "videoBlock" => {
+          myRangeField,
+          video{ asset->{ url } },
+          videoFallback{ asset->{ url } },
+          posterImage{
+            asset->{
+              ...,
+              metadata{
+                dimensions{ width, height, aspectRatio }
+              }
+            },
+            hotspot,
+            crop
+          },
+          description,
+          hasAudio
+        }
       },
       title,
       subtitle,

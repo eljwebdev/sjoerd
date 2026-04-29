@@ -1,5 +1,6 @@
 ---
 import SanityImage from "../SanityImage.astro";
+import SanityVideo from "../SanityVideo.astro";
 import PortableText from "../../components/PortableText.astro";
 
 
@@ -23,10 +24,10 @@ const {
         <div class="swiper">
             <div class="images-desktop-inner swiper-wrapper"> 
                 {imagesDesktop?.map((item: any) => (
-                    <div class="image-wrapper swiper-slide">
-                        <SanityImage image={item.image} alt={item.alt} />
+                    <div class={`media-wrapper swiper-slide${item.myRangeField ? ` cols-${item.myRangeField}` : ''}`}>
+                        {item._type === 'imageBlock' && <SanityImage image={item.image} alt={item.alt} />}
+                        {item._type === 'videoBlock' && <SanityVideo video={item.video} videoFallback={item.videoFallback} posterImage={item.posterImage} description={item.description} hasAudio={item.hasAudio} />}
                     </div>
-    
                 ))}
             </div>
             <!-- <div class="swiper-scrollbar"></div> -->
@@ -35,7 +36,10 @@ const {
 
     <div class="images-mobile container--margin-normal">
       {imagesMobile?.map((item: any) => (
-        <SanityImage image={item.image} alt={item.alt} />
+        <div class={`media-wrapper${item.myRangeField ? ` cols-${item.myRangeField}` : ''}`}>
+          {item._type === 'imageBlock' && <SanityImage image={item.image} alt={item.alt} />}
+          {item._type === 'videoBlock' && <SanityVideo video={item.video} videoFallback={item.videoFallback} posterImage={item.posterImage} description={item.description} hasAudio={item.hasAudio} />}
+        </div>
       ))}
     </div>
 
@@ -96,7 +100,7 @@ const {
         @include responsive($md){
             display: none;
         }
-        :global(.image-wrapper) {
+        :global(.media-wrapper) {
             height: clamp(500px, 30.36vw + 246.8px, 1024px);
             overflow: hidden;
             @include responsiveMin($md){
@@ -107,13 +111,55 @@ const {
             }
         }
 
-        // :global(.image-wrapper.small){
-        //     min-width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 3 + (4 * 32px) );
-        // }
-        // :global(.image-wrapper.medium){
-        //     min-width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 6 + (5 * 32px) );
-        // }
+        /* cols styling 3 to 8 */
+        :global(.media-wrapper.cols-3){
+            @include responsiveMin($md){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 16px) )  / 12) * 3 + (2 * 16px) );
+            }
+            @include responsiveMin($xl){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 3 + (2 * 32px) );
+            }
+        }
 
+        :global(.media-wrapper.cols-4){
+            @include responsiveMin($md){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 16px) )  / 12) * 4 + (3 * 16px) );
+            }
+            @include responsiveMin($xl){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 4 + (3 * 32px) );
+            }
+        }
+
+        :global(.media-wrapper.cols-5){
+            @include responsiveMin($md){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 16px) )  / 12) * 5 + (4 * 16px) );
+            }
+            @include responsiveMin($xl){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 5 + (4 * 32px) );
+            }
+        }
+
+        :global(.media-wrapper.cols-6){
+            @include responsiveMin($md){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 16px) )  / 12) * 6 + (5 * 16px) );
+            }
+            @include responsiveMin($xl){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 6 + (5 * 32px) );
+            }
+        }
+
+        :global(.media-wrapper.cols-7){
+            @include responsiveMin($md){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 16px) )  / 12) * 7 + (6 * 16px) );
+            }
+            @include responsiveMin($xl){
+                width: calc( ((100vw - (2 * var(--padding-horizontal)) - (11 * 32px) )  / 12) * 7 + (6 * 32px) );
+            }
+        }
+
+        /* cols-8 is the default, so no need to set width for that one */
+
+        /* end of cols styling */
 
         :global(.image) {
             height: 100%;
@@ -121,7 +167,7 @@ const {
             object-fit: cover;
         }
         &.settings-height-small {
-            :global(.image-wrapper) {
+            :global(.media-wrapper) {
                 height: clamp(500px, 18.2vw + 348px, 814px);            
             }
         }
@@ -133,7 +179,7 @@ const {
             // @include responsiveMin($xl) {
             //     gap: 32px;
             // }
-            // .image-wrapper, .video-wrapper {
+            // .media-wrapper, .video-wrapper {
             //     scroll-snap-align: start;
             // }
         }

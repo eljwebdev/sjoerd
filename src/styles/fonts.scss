@@ -55,6 +55,11 @@
   @include small-text();
 }
 
+button.video-unmute {
+    text-transform: lowercase;
+    @include small-text();
+}
+
 .portable-text-container {
   p, a {
     @include small-text();
