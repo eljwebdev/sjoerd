@@ -97,8 +97,7 @@ const { title, description, work } = homePage ?? {};
 
 <Layout pageTitle={title} pageDescription={description}>
 
-<p>Empty test</p>
-<!-- {work?.map((project) => (
+{work?.map((project) => (
   <Project
     imagesDesktop={project.imagesDesktop}
     imagesMobile={project.imagesMobile}
@@ -108,7 +107,7 @@ const { title, description, work } = homePage ?? {};
     imageHeight={project.imageHeight}
     textPosition={project.textPosition}
   />
-))} -->
+))}
 
 
 </Layout>

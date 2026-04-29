@@ -18,6 +18,7 @@ const posterUrl = urlFor(posterImage).auto('format').url()
 
 <div class="video-wrapper">
   <video
+    class="video lozad-video"
     aria-label={description}
     poster={posterUrl}
     playsinline
@@ -34,6 +35,20 @@ const posterUrl = urlFor(posterImage).auto('format').url()
     </button>
   )}
 </div>
+
+<script>
+    // @ts-nocheck
+    import lozad from 'lozad';
+
+    const observer = lozad('.lozad-video', {
+        rootMargin: '100px 100px',
+        loaded: (el) => {
+            console.log('Video loaded:', el);
+        }
+    });
+    observer.observe();
+
+</script>
 
 {hasAudio && (
   <script>
