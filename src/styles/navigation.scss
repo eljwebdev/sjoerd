@@ -4,6 +4,7 @@
 .nav {
     text-transform: lowercase;
     position: fixed;
+    z-index: 9999999999;
     background-color: var(--c-black);
     color: var(--c-dim);
     width: 100vw;
@@ -255,14 +256,14 @@
 }
 
 .dim-animation {
-  animation: dimAnimation 1.5s ease forwards;
+  animation: dimAnimation 3s ease forwards;
 }
 
 /* version 1 */
 
 @keyframes confirmAnimation {
   0%   { opacity: 0; }
-  30%  { opacity: 1; }
+  20%  { opacity: 1; }
   60%  { opacity: 1; }
   100% { opacity: 0; }
 }
@@ -277,10 +278,10 @@
 }
 
 .confirm-animation {
-  animation: confirmAnimation 2s ease forwards;
+  animation: confirmAnimation 3.5s ease forwards;
 
   .copy-confirmation-text {
-    animation: confirmTextAnimation 2s ease forwards;
+    animation: confirmTextAnimation 3.5s ease forwards;
   }
 }
 
