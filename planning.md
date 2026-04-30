@@ -114,3 +114,141 @@ document.addEventListener('astro:page-load', () => {
 
 
 Observers and timers (IntersectionObserver, MutationObserver, setInterval) hold references that outlive the DOM — always disconnect them on astro:before-swap. Event listeners on replaced elements clean themselves up automatically.
+
+---
+
+## Custom elements for repeated components
+
+### When to use a custom element
+Use a custom element when the behavior belongs to **one component instance** and that component may appear multiple times on the page.
+
+Good fit:
+
+- A video component with its own lazy loading, play state, and mute button
+- A reusable accordion, slider, or gallery
+- Anything that needs setup and cleanup per instance
+
+Not a good fit:
+
+- Site-wide navigation behavior
+- Global theme handling
+- One-off page scripts that are not tied to a reusable DOM instance
+
+### Why this works well with Astro view transitions
+The browser automatically calls a custom element's lifecycle methods whenever the element is added to or removed from the DOM.
+
+- `connectedCallback()` runs when the new page's element is inserted
+- `disconnectedCallback()` runs when the old page's element is removed
+
+That means you usually do **not** need `astro:page-load` or `astro:after-swap` inside the component at all.
+
+```js
+class SanityVideoElement extends HTMLElement {
+  connectedCallback() {
+    // setup for this instance only
+  }
+
+  disconnectedCallback() {
+    // cleanup for this instance only
+  }
+}
+
+if (!customElements.get('sanity-video')) {
+  customElements.define('sanity-video', SanityVideoElement);
+}
+```
+
+### What `customElements` is
+`customElements` is **not Astro**. It is the browser's built-in `CustomElementRegistry` API.
+
+- `customElements.define('sanity-video', ClassName)` registers a custom HTML tag
+- `customElements.get('sanity-video')` checks whether it has already been registered
+
+The guard matters because calling `define()` twice for the same name throws an error.
+
+### Lesson from this project
+`SanityVideo` worked better as a custom element because each video instance needed its own:
+
+- IntersectionObserver
+- source loading
+- autoplay attempt
+- mute button listener
+- cleanup
+
+That logic was instance-scoped, not page-scoped.
+
+---
+
+## Truly global scripts with Astro view transitions
+
+### What counts as truly global
+A script is truly global when it manages behavior that belongs to the persistent app shell or to persistent browser objects, not to one swappable page fragment.
+
+Typical examples:
+
+- Navigation behavior in a shared layout
+- Theme or `<html>` class restoration
+- Global keyboard shortcuts
+- Scroll listeners on `window`
+- Document-level click delegation
+
+### Correct pattern
+Split the script into two kinds of work:
+
+1. **Global listeners / long-lived state**: register once at top level
+2. **DOM-dependent re-init**: run once now, then again after each swap
+
+```js
+let resizeController = null;
+
+function setupLayout() {
+  if (resizeController) resizeController.abort();
+  resizeController = new AbortController();
+
+  applyLayout();
+  window.addEventListener('resize', applyLayout, {
+    signal: resizeController.signal,
+  });
+}
+
+setupLayout();
+document.addEventListener('astro:after-swap', setupLayout);
+```
+
+### When to use `after-swap` for a global script
+Use `astro:after-swap` when the script needs to touch the incoming DOM **before** later scripts or visual flashes make the page look wrong.
+
+Best for:
+
+- Reordering navigation markup
+- Restoring classes on `<html>` or `<body>`
+- Applying structural DOM changes immediately after swap
+
+### When to use `page-load` for a global script
+Use `astro:page-load` when the script depends on the new page being fully initialized first.
+
+Best for:
+
+- Re-initializing plugins that expect the final DOM
+- Measuring layout after scripts have run
+- Simple page-level enhancements with no DOM restructuring
+
+### Navigation example from this project
+Your navigation script is a good example of a correct truly global script:
+
+- It lives in a shared layout component
+- It runs immediately on first load
+- It re-runs on `astro:after-swap`
+- It tears down the previous `resize` listener before re-attaching
+- It updates DOM structure early enough to avoid mobile/desktop layout flash
+
+That is why `after-swap` was the right event there, while `page-load` was the wrong one.
+
+### Global script checklist
+
+- Put the script in a shared layout or other persistent shell component
+- Register persistent listeners only once, or tear them down before re-adding
+- Re-run only the DOM-dependent parts after navigation
+- Use `astro:after-swap` for structural DOM fixes
+- Use `astro:page-load` for post-init enhancements
+- Clean up observers, timers, and long-lived listeners when they would otherwise stack
