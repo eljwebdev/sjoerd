@@ -16,68 +16,123 @@ const mp4Url = videoFallback?.asset?.url
 const posterUrl = urlFor(posterImage).auto('format').url()
 ---
 
-<div class="video-wrapper">
-  <video
-    class="video lozad-video"
-    aria-label={description}
-    poster={posterUrl}
-    playsinline
-    autoplay
-    muted
-    loop
-  >
-    {webmUrl && <source data-src={webmUrl} type="video/webm" />}
-    <source data-src={mp4Url} type="video/mp4" />
-  </video>
-  {hasAudio && (
-    <button class="video-unmute" aria-label="Unmute video">
-      unmute
-    </button>
-  )}
-</div>
+<sanity-video>
+  <div class="video-wrapper">
+    <video
+      class="video lozad-video"
+      aria-label={description}
+      poster={posterUrl}
+      playsinline
+      autoplay
+      muted
+      loop
+    >
+      {webmUrl && <source data-src={webmUrl} type="video/webm" />}
+      <source data-src={mp4Url} type="video/mp4" />
+    </video>
+    {hasAudio && (
+      <button class="video-unmute" aria-label="Unmute video">
+        unmute
+      </button>
+    )}
+  </div>
+</sanity-video>
 
 <script>
     // @ts-nocheck
-    import lozad from 'lozad';
+    class SanityVideoElement extends HTMLElement {
+      connectedCallback() {
+        this.video = this.querySelector('video');
+        this.button = this.querySelector('.video-unmute');
 
-    let observer;
+        if (!this.video) return;
 
-    function videoObserver(){
-      if (observer) observer.disconnect();
-      observer = lozad('.lozad-video', {
-          rootMargin: '100px 100px',
-          loaded: (el) => {
-              // console.log('Video loaded:', el);
-              el.play().catch(() => {});
+        this.setupObserver();
+        this.setupAudioButton();
+      }
+
+      disconnectedCallback() {
+        if (this.observer) {
+          this.observer.disconnect();
+          this.observer = null;
+        }
+
+        if (this.button && this.buttonHandler) {
+          this.button.removeEventListener('click', this.buttonHandler);
+        }
+      }
+
+      setupObserver() {
+        if (this.video.dataset.loaded === 'true') {
+          this.playVideo();
+          return;
+        }
+
+        if (this.observer) {
+          this.observer.disconnect();
+        }
+
+        this.observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            this.loadSources();
+            this.playVideo();
+            this.observer.unobserve(this.video);
+          });
+        }, {
+          rootMargin: '100px 100px'
+        });
+
+        this.observer.observe(this.video);
+      }
+
+      loadSources() {
+        this.video.querySelectorAll('source[data-src]').forEach((source) => {
+          if (!source.getAttribute('src')) {
+            source.setAttribute('src', source.dataset.src || '');
           }
-      });
-      observer.observe();
+        });
+
+        this.video.dataset.loaded = 'true';
+        this.video.load();
+      }
+
+      playVideo() {
+        const startPlayback = () => {
+          this.video.play().catch(() => {});
+        };
+
+        if (this.video.readyState >= 2) {
+          startPlayback();
+          return;
+        }
+
+        this.video.addEventListener('canplay', startPlayback, { once: true });
+      }
+
+      setupAudioButton() {
+        if (!this.button) return;
+
+        if (this.buttonHandler) {
+          this.button.removeEventListener('click', this.buttonHandler);
+        }
+
+        this.buttonHandler = () => {
+          this.video.muted = !this.video.muted;
+          this.button.textContent = this.video.muted ? 'unmute' : 'mute';
+          this.button.setAttribute('aria-label', this.video.muted ? 'Unmute video' : 'Mute video');
+        };
+
+        this.button.addEventListener('click', this.buttonHandler);
+      }
     }
 
-    document.addEventListener('astro:page-load', videoObserver);
+    if (!customElements.get('sanity-video')) {
+      customElements.define('sanity-video', SanityVideoElement);
+    }
 
 </script>
-
-{hasAudio && (
-  <script>
-
-    function lozadVideoWithAudio(){
-      document.querySelectorAll('.video-wrapper').forEach((wrapper) => {
-        const video = wrapper.querySelector('video');
-        const btn = wrapper.querySelector('.video-unmute');
-        if (!video || !btn) return;
-  
-        btn.addEventListener('click', () => {
-          video.muted = !video.muted;
-          btn.textContent = video.muted ? 'unmute' : 'mute';
-          btn.setAttribute('aria-label', video.muted ? 'Unmute video' : 'Mute video');
-        });
-      })
-    }
-
-    document.addEventListener('astro:page-load', lozadVideoWithAudio);
-  </script>
-)}
 
 <style>
   .video-wrapper {
