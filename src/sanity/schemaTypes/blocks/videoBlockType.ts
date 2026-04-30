@@ -44,7 +44,7 @@ export const videoBlockType = defineType({
       type: "string",
       title: "Description",
       description: "Add description of video for SEO and accessibility",
-      validation: (Rule) => Rule.required(),
+      // validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "hasAudio",

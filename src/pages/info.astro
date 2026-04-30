@@ -104,39 +104,29 @@ const mailadres = data?.mailAdres ?? '';
     }
   }
   .info-label {
-    grid-column: 1 / 5;
+    grid-column: 1 / 4;
   }
   .content-wrapper {
-    grid-column: 5 / 11;
+    grid-column: 4 / 11;
 
     .text-entry li {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      padding-top: 24px;
+      display: flex;
       gap: 16px;
       @include responsiveMin($xl){
         gap: 32px;
       }
       @include responsive($md){
+        display: grid;
         grid-template-columns: repeat(3, 1fr);
-      }
-      .label {
-        grid-column: 1 / 2; //mobile
-        @include responsiveMin($md){
-          grid-column: 1 / 3;
-        }
-        @include responsiveMin(1700px){
+        .label {
           grid-column: 1 / 2;
         }
-      }
-      :global(.portable-text-container) {
-        grid-column: 3 / 6; //mobile
-        @include responsiveMin($md){
-          grid-column: 2 / 5;
-        }
-        @include responsiveMin(1700px){
-          grid-column: 2 / 5;
+        .portable-text-container {
+          grid-column: 2 / 4;
         }
       }
+
     }
   }
   .info-page-mail {

@@ -36,7 +36,7 @@ if (path === '/info' || path === '/info/') {
       <p class="nav__tagline--mob1 mobile">{menu?.tagLineMob1}</p>
       <p class="nav__tagline--mob2 mobile">{menu?.tagLineMob2}</p>
     </div>
-    <div class="right container--grid-ninecols">
+    <div id="nav-right" class="right container--grid-ninecols">
       <div class="col col-2">
         <a class:list={['hover-wrapper', 'page-link', homeClass, 'work-link']} href="/">
           <span class="visible-text">{menu?.workTitle}</span>
@@ -76,7 +76,7 @@ if (path === '/info' || path === '/info/') {
       const originalNav = document.querySelector('.nav-original');
       if (!originalNav) return;
       const inner = originalNav.querySelector('.nav--inner');
-      const right = originalNav.querySelector('.right');
+      const right = document.getElementById('nav-right');
 
       if (window.innerWidth < BREAKPOINT) {
         if (!mobileNav) {

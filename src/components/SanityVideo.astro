@@ -40,29 +40,41 @@ const posterUrl = urlFor(posterImage).auto('format').url()
     // @ts-nocheck
     import lozad from 'lozad';
 
-    const observer = lozad('.lozad-video', {
-        rootMargin: '100px 100px',
-        loaded: (el) => {
-            console.log('Video loaded:', el);
-        }
-    });
-    observer.observe();
+    let observer;
+
+    function videoObserver(){
+      if (observer) observer.disconnect();
+      observer = lozad('.lozad-video', {
+          rootMargin: '100px 100px',
+          loaded: (el) => {
+              console.log('Video loaded:', el);
+          }
+      });
+      observer.observe();
+    }
+
+    document.addEventListener('astro:page-load', videoObserver);
 
 </script>
 
 {hasAudio && (
   <script>
-    document.querySelectorAll('.video-wrapper').forEach((wrapper) => {
-      const video = wrapper.querySelector('video');
-      const btn = wrapper.querySelector('.video-unmute');
-      if (!video || !btn) return;
 
-      btn.addEventListener('click', () => {
-        video.muted = !video.muted;
-        btn.textContent = video.muted ? 'unmute' : 'mute';
-        btn.setAttribute('aria-label', video.muted ? 'Unmute video' : 'Mute video');
-      });
-    })
+    function lozadVideoWithAudio(){
+      document.querySelectorAll('.video-wrapper').forEach((wrapper) => {
+        const video = wrapper.querySelector('video');
+        const btn = wrapper.querySelector('.video-unmute');
+        if (!video || !btn) return;
+  
+        btn.addEventListener('click', () => {
+          video.muted = !video.muted;
+          btn.textContent = video.muted ? 'unmute' : 'mute';
+          btn.setAttribute('aria-label', video.muted ? 'Unmute video' : 'Mute video');
+        });
+      })
+    }
+
+    document.addEventListener('astro:page-load', lozadVideoWithAudio);
   </script>
 )}
 
