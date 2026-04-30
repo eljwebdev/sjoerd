@@ -26,8 +26,8 @@ const posterUrl = urlFor(posterImage).auto('format').url()
     muted
     loop
   >
-    {webmUrl && <source src={webmUrl} type="video/webm" />}
-    <source src={mp4Url} type="video/mp4" />
+    {webmUrl && <source data-src={webmUrl} type="video/webm" />}
+    <source data-src={mp4Url} type="video/mp4" />
   </video>
   {hasAudio && (
     <button class="video-unmute" aria-label="Unmute video">
@@ -36,7 +36,7 @@ const posterUrl = urlFor(posterImage).auto('format').url()
   )}
 </div>
 
-<!-- <script>
+<script>
     // @ts-nocheck
     import lozad from 'lozad';
 
@@ -56,7 +56,7 @@ const posterUrl = urlFor(posterImage).auto('format').url()
 
     document.addEventListener('astro:page-load', videoObserver);
 
-</script> -->
+</script>
 
 {hasAudio && (
   <script>
