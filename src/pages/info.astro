@@ -33,7 +33,7 @@ const mailadres = data?.mailAdres ?? '';
   {rows?.map((row: any) => (
     <section class="section-info-row container--margin-normal">
       <div class="section-info-row-inner container--grid">
-        <div class="label uppercase"><h2 class="small-text">{row.label}</h2></div>
+        <div class="info-label uppercase"><h2 class="small-text">{row.label}</h2></div>
         <div class="content-wrapper">
 
           {row.layout === '1col' && (
@@ -70,7 +70,7 @@ const mailadres = data?.mailAdres ?? '';
 
   <section class="section-info-row container--margin-normal">
     <div class="section-info-row-inner container--grid">
-      <div class="label uppercase"><h2 class="small-text">contact</h2></div>
+      <div class="info-label uppercase"><h2 class="small-text">contact</h2></div>
       <div class="content-wrapper">
         <div class="content">
           <p class="big-text">
@@ -86,15 +86,58 @@ const mailadres = data?.mailAdres ?? '';
 <style lang="scss">
   .section-info-row:first-of-type {
     padding-top: 128px;
+    @include responsive($md){
+      padding-top: 122px;
+    }
   }
   .section-info-row:not(:first-of-type) {
     padding-top: 244px;
+    @include responsive($md){
+      padding-top: 122px;
+    }
   }
-  .label {
+  .container--grid {
+    @include responsive($md){
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+  .info-label {
     grid-column: 1 / 5;
   }
   .content-wrapper {
     grid-column: 5 / 11;
+
+    .text-entry li {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      @include responsiveMin($xl){
+        gap: 32px;
+      }
+      @include responsive($md){
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .label {
+        grid-column: 1 / 2; //mobile
+        @include responsiveMin($md){
+          grid-column: 1 / 3;
+        }
+        @include responsiveMin(1700px){
+          grid-column: 1 / 2;
+        }
+      }
+      :global(.portable-text-container) {
+        grid-column: 3 / 6; //mobile
+        @include responsiveMin($md){
+          grid-column: 2 / 5;
+        }
+        @include responsiveMin(1700px){
+          grid-column: 2 / 5;
+        }
+      }
+    }
   }
   .info-page-mail {
     text-decoration: underline;
