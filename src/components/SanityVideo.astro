@@ -47,7 +47,8 @@ const posterUrl = urlFor(posterImage).auto('format').url()
       observer = lozad('.lozad-video', {
           rootMargin: '100px 100px',
           loaded: (el) => {
-              console.log('Video loaded:', el);
+              // console.log('Video loaded:', el);
+              el.play().catch(() => {});
           }
       });
       observer.observe();
