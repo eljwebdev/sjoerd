@@ -5,35 +5,27 @@ export const infoPageType = defineType({
   type: "document",
   title: "Info Page",
   groups: [
-    { name: 'content', title: 'Inhoud', default: true },
-    { name: 'seo', title: 'SEO' },
+    { name: 'content', title: 'Content', default: true },
+    { name: 'settings', title: 'Page settings' },
   ],
   fields: [
     defineField({
-      name: "title",
-      type: "string",
+      name: "headSeo",
+      title: "Head settings SEO",
+      type: "headSeo",
+      group: 'settings',
+    }),
+    defineField({
+      name: "rows",
+      title: "Info page content blocks",
+      type: "array",
+      of: [{ type: "infoRowBlock" }],
       group: 'content',
-    }),
-    defineField({
-      name: "metaTitle",
-      title: "Meta Titel",
-      type: "string",
-      description: "Overschrijft de paginatitel in zoekresultaten. Laat leeg om de paginatitel te gebruiken.",
-      group: 'seo',
-    }),
-    defineField({
-      name: "metaDescription",
-      title: "Meta Beschrijving",
-      type: "text",
-      rows: 3,
-      description: "Beschrijving die wordt weergegeven in zoekresultaten (max ~160 tekens)",
-      validation: (rule) => rule.max(160).warning('Houd de beschrijving onder 160 tekens voor optimale weergave'),
-      group: 'seo',
     }),
   ],
   preview: {
     select: {
-      title: "title",
+      title: "headSeo.pageTitle",
     },
   },
 });

@@ -62,12 +62,20 @@ button.video-unmute {
     @include small-text();
 }
 
-.portable-text-container {
-  p, a {
-    @include small-text();
-    text-transform: lowercase;
-  }
-}
+// .portable-text-container {
+//   p, a {
+//     @include small-text();
+//     text-transform: lowercase;
+//   }
+// }
+
+// .section-info-row {
+//   .portable-text-container {
+//     p, a {
+//       @include big-text();
+//     }
+//   }
+// }
 
 .uppercase {
   text-transform: uppercase;

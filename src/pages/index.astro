@@ -5,8 +5,9 @@ import Project from "../components/blocks/Project.astro";
 
 const homePage = await sanityClient.fetch(
   `*[_type == "homePage"][0]{
-    title, 
-    description, 
+    "title": headSeo.pageTitle,
+    "metaTitle": headSeo.metaTitle,
+    "description": headSeo.metaDescription,
     work[]{
       imagesDesktop[]{
         _type,
@@ -89,13 +90,13 @@ const homePage = await sanityClient.fetch(
     }
   }`
 );
-const { title, description, work } = homePage ?? {};
+const { title, metaTitle, description, work } = homePage ?? {};
 
 ---
 
 
 
-<Layout pageTitle={title} pageDescription={description}>
+<Layout pageTitle={title} metaTitle={metaTitle} pageDescription={description}>
 
 {work?.map((project) => (
   <Project

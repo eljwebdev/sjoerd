@@ -1,44 +1,31 @@
 import { defineField, defineType } from "sanity";
+import {DocumentIcon} from '@sanity/icons'
 
 export const homePageType = defineType({
   name: "homePage",
   type: "document",
   title: "Home Page",
+  icon: DocumentIcon,
 groups: [
-    { name: 'content', title: 'Inhoud', default: true },
-    { name: 'seo', title: 'SEO' },
+    { name: 'content', title: 'Content', default: true },
+    { name: 'settings', title: 'Page settings' },
   ],
   fields: [
     defineField({
-      name: "title",
-      type: "string",
-      group: 'content',
+      name: "headSeo",
+      title: "Head SEO",
+      type: "headSeo",
+      group: 'settings',
     }),
     defineField({
       name: "work",
       type: "work",
       group: 'content',
     }),
-    defineField({
-      name: "metaTitle",
-      title: "Meta Titel",
-      type: "string",
-      description: "Overschrijft de paginatitel in zoekresultaten. Laat leeg om de paginatitel te gebruiken.",
-      group: 'seo',
-    }),
-    defineField({
-      name: "metaDescription",
-      title: "Meta Beschrijving",
-      type: "text",
-      rows: 3,
-      description: "Beschrijving die wordt weergegeven in zoekresultaten (max ~160 tekens)",
-      validation: (rule) => rule.max(160).warning('Houd de beschrijving onder 160 tekens voor optimale weergave'),
-      group: 'seo',
-    }),
   ],
   preview: {
     select: {
-      title: "title",
+      title: "headSeo.pageTitle",
     },
   },
 });

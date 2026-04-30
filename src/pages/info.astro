@@ -1,30 +1,104 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PortableText from "../components/PortableText.astro";
 import { sanityClient } from 'sanity:client';
 
-const infoPage = await sanityClient.fetch(
-  `*[_type == "infoPage"][0]{ title, description
-  }`
-);
-const { title, description } = infoPage ?? {};
-
+const data = await sanityClient.fetch(`{
+  "infoPage": *[_type == "infoPage"][0]{
+    "title": headSeo.pageTitle,
+    "metaTitle": headSeo.metaTitle,
+    "description": headSeo.metaDescription,
+    rows[] {
+      label,
+      layout,
+      text,
+      textEntry {
+        textEntries[] {
+          label,
+          content
+        }
+      },
+      textLeft,
+      textRight
+    }
+  },
+  "mailAdres": *[_type == "settings"][0].settings.mailAdres
+}`);
+const { title, metaTitle, description, rows } = data?.infoPage ?? {};
+const mailadres = data?.mailAdres ?? '';
 ---
 
+<Layout pageTitle={title} metaTitle={metaTitle} pageDescription={description}>
 
+  {rows?.map((row: any) => (
+    <section class="section-info-row container--margin-normal">
+      <div class="section-info-row-inner container--grid">
+        <div class="label uppercase"><h2 class="small-text">{row.label}</h2></div>
+        <div class="content-wrapper">
 
-<Layout pageTitle={title}>
+          {row.layout === '1col' && (
+            <div class="content">
+              {row.text && <PortableText value={row.text} class="big-text" />}
+              {row.textEntry?.textEntries?.length > 0 && (
+                <ul class="text-entry">
+                  {row.textEntry.textEntries.map((entry: any) => (
+                    <li>
+                      {entry.label && <span class="label small-text uppercase">{entry.label}</span>}
+                      {entry.content && <PortableText value={entry.content} class="small-text" />}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
 
+          {row.layout === '2col' && (
+            <>
+              <div class="content-col">
+                {row.textLeft && <PortableText value={row.textLeft} class="big-text" />}
+              </div>
+              <div class="content-col">
+                {row.textRight && <PortableText value={row.textRight} class="big-text" />}
+              </div>
+            </>
+          )}
 
+        </div>
+      </div>
+    </section>
+  ))}
 
-
-<section>
-  <div style="height: 400vh; padding-top: 100px;">
-    <div class="text-big container--margin-normal">
-      <h1>Info</h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate.</p>
+  <section class="section-info-row container--margin-normal">
+    <div class="section-info-row-inner container--grid">
+      <div class="label uppercase"><h2 class="small-text">contact</h2></div>
+      <div class="content-wrapper">
+        <div class="content">
+          <p class="big-text">
+            <a class="info-page-mail" href={`mailto:${mailadres}`}>{mailadres}</a>
+          </p>
+        </div>
+      </div>
     </div>
-    
-  </div>
-</section>
+  </section>
 
 </Layout>
+
+<style lang="scss">
+  .section-info-row:first-of-type {
+    padding-top: 128px;
+  }
+  .section-info-row:not(:first-of-type) {
+    padding-top: 244px;
+  }
+  .label {
+    grid-column: 1 / 5;
+  }
+  .content-wrapper {
+    grid-column: 5 / 11;
+  }
+  .info-page-mail {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 0.5px;
+  }
+</style>

@@ -58,7 +58,7 @@ const {
                 {textEntries?.map((entry: any) => (
                     <li>
                     {entry.label && <span class="label small-text uppercase">{entry.label}</span>}
-                    {entry.content && <PortableText value={entry.content} />}
+                    {entry.content && <PortableText value={entry.content} class="small-text lowercase" />}
                     </li>
                 ))}
             </ul>
@@ -499,7 +499,7 @@ import { init } from "astro/virtual-modules/prefetch.js";
                         slidesPerView: "auto",
                         grabCursor: true,
                         momentum: true,
-                        momentumRatio: 4,
+                        momentumRatio: 5,
                         mousewheel: {
                             enabled: true,
                             sticky: false,

@@ -1,15 +1,16 @@
 ---
 import { PortableText as PortableTextInternal } from 'astro-portabletext'
 
-const { value } = Astro.props
+const { value, class: className } = Astro.props
 
 /* filter out empty blocks to prevent rendering empty <p> tags */
 const filtered = value?.filter((block: any) => {
   if (block._type !== 'block') return true
   return block.children?.some((child: any) => child.text?.trim() !== '')
 })
+
 ---
 
-<div class="portable-text-container">
+<div class:list={['portable-text-container', className]}>
   <PortableTextInternal value={filtered} />
 </div>

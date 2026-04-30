@@ -1,9 +1,9 @@
-// ./src/sanity/schemaTypes/blockContent.ts
+// ./src/sanity/schemaTypes/blocks/textBlockType.ts
 import { defineType, defineArrayMember } from "sanity";
 
-export const blockContentType = defineType({
-  title: "Block Content",
-  name: "blockContent",
+export const textBlockType = defineType({
+  title: "Text Block",
+  name: "textBlock",
   type: "array",
   of: [
     defineArrayMember({

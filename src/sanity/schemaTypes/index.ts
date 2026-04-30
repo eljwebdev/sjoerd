@@ -2,13 +2,16 @@
 import type { SchemaTypeDefinition } from "sanity";
 
 import { settingsType } from "./settings";
-import { imageBlockType } from "./modules/imageBlockType";
-import { videoBlockType } from "./modules/videoBlockType";
+import { imageBlockType } from "./blocks/imageBlockType";
+import { videoBlockType } from "./blocks/videoBlockType";
 import { workType } from "../workType";
 import { projectBlockType } from "./blocks/projectBlockType";
 import { homePageType } from "./homePageType";
 import { infoPageType } from "./infoPageType";
-import { blockContentType } from "./blocks/blockContent";
+import { textBlockType } from "./blocks/textBlockType";
+import { textEntryType } from "./modules/textEntryType";
+import { headSeoType } from "./modules/headSeoType";
+import { infoRowBlockType } from "./blocks/infoRowBlockType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -19,6 +22,9 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     workType,
     homePageType,
     infoPageType,
-    blockContentType,
+    textBlockType,
+    textEntryType,
+    headSeoType,
+    infoRowBlockType,
   ],
 };

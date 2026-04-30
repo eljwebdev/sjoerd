@@ -7,9 +7,10 @@ import { ClientRouter } from "astro:transitions";
 
 interface Props {
   pageTitle: string;
+  metaTitle?: string;
   pageDescription?: string;
 }
-const { pageTitle, pageDescription } = Astro.props;
+const { pageTitle, metaTitle, pageDescription } = Astro.props;
 
 const settings = await sanityClient.fetch(
   `*[_type == "settings"][0]{
@@ -20,6 +21,9 @@ const settings = await sanityClient.fetch(
 );
 const { siteTitle, siteDescription, indexing } = settings ?? {};
 
+// metaTitle overrides pageTitle in <title> tag only (search results)
+// pageDescription overrides global siteDescription
+const titleTag = metaTitle || pageTitle;
 const description = pageDescription || siteDescription;
 
 
@@ -33,7 +37,7 @@ const description = pageDescription || siteDescription;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle} | {siteTitle}</title>
+		<title>{titleTag} | {siteTitle}</title>
 		{description && <meta name="description" content={description} />}
 		<link rel="canonical" href={Astro.url.href} />
 		{!indexing && <meta name="robots" content="noindex, nofollow" />}

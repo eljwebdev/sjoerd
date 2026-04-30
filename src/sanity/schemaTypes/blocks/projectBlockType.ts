@@ -49,28 +49,8 @@ export const projectBlockType = defineType({
         defineField({
             name: "textEntries",
             title: "Text Entries",
-            type: "array",
+            type: "textEntry",
             group: "text",
-            of: [
-                {
-                    type: "object",
-                    fields: [
-                        defineField({
-                            name: "label",
-                            title: "Label",
-                            type: "string",
-                        }),
-                        defineField({
-                            name: "content",
-                            title: "Content",
-                            type: "blockContent",
-                        }),
-                    ],
-                    preview: {
-                        select: { title: "label" },
-                    },
-                },
-            ],
         }),
 
         // Settings group
