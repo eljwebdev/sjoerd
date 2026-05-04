@@ -3,7 +3,7 @@ import '../styles/main.scss';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import { sanityClient } from 'sanity:client';
-import { ClientRouter } from "astro:transitions";
+import { ClientRouter, fade, slide } from "astro:transitions";
 
 interface Props {
   pageTitle: string;
@@ -28,8 +28,6 @@ const description = pageDescription || siteDescription;
 
 
 
-
-
 ---
 <!doctype html>
 <html lang="en">
@@ -48,6 +46,8 @@ const description = pageDescription || siteDescription;
 		<ClientRouter />
 
 	</head>
+
+
 	<body>
 		<Navigation></Navigation>
 		<main>
@@ -56,4 +56,15 @@ const description = pageDescription || siteDescription;
 		<Footer></Footer>
 	</body>
 </html>
+
+<!-- <style is:global>
+  ::view-transition-group(*) {
+    animation: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+</style> -->
+
 

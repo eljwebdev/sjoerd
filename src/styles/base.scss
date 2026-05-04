@@ -11,11 +11,12 @@
 
 html {
     overflow-x: hidden;
+    background: var(--c-black);
+
 }
 
 html,
 body {
-    background: var(--c-black);
     font-family: 'Diatype', sans-serif;
     color: var(--c-white);
     font-weight: normal;
@@ -113,6 +114,10 @@ ul a {
 
 /* ------- global styles -------  */
 
+// main {
+//     background-color: var(--c-black);
+// }
+
 .container--grid {
     @include grid();
 }
@@ -173,9 +178,7 @@ body {
 //     }
 // }
 
-@view-transition {
-  navigation: auto;
-}
+
   
 
 /* class to hide visually but keep available to screen readers (for accessibility) */

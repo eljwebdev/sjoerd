@@ -10,9 +10,6 @@ const navData = await sanityClient.fetch(
 );
 const { menu, mailadres } = navData ?? {};
 
-
-
-
 const path = Astro.url.pathname;
 let navClass = '';
 let homeClass = '';
@@ -28,8 +25,30 @@ if (path === '/info' || path === '/info/') {
   infoClass = 'current';
 }
 
+const animNav = {
+  old: {
+    name: "moveNav",
+    duration: "0.9s",
+    easing: "ease-in",
+    fillMode: "forwards",       
+
+  },
+  new: {
+    name: "moveNav",
+    duration: "0.7s",
+    easing: "ease-out",
+    direction: "reverse",    
+    fillMode: "backwards",       
+  },
+};
+
+const customTransitionNav = {
+  forwards: animNav,
+  backwards: animNav,
+};
+
 ---
-<nav class:list={['nav', 'nav-original', navClass]} transition:animate={fade({ duration: "0.8s" })}>
+<nav class:list={['nav', 'nav-original', navClass]} transition:animate={fade({ duration: "0.9s" })}>
   <div class="nav--inner container--margin-normal container--grid">
     <div class="left">
       <a class="logo-link" href="/">{menu?.menuTitle}</a>
@@ -42,7 +61,7 @@ if (path === '/info' || path === '/info/') {
           <span class="visible-text">{menu?.workTitle}</span>
           <span class="hover-text c-white">{menu?.workTextHover}</span>
         </a>
-        <div class:list={['nav__tagline', 'desktop', 'big-text', 'hover-wrapper', infoClass]}>
+        <div class:list={['nav__tagline', 'desktop', 'big-text', 'hover-wrapper', infoClass]} transition:animate={customTransitionNav}>
           <p class="visible-text">{menu?.tagLine}</p>
           <span class="hover-text">{menu?.tagLineHover}</span>
         </div>
@@ -143,3 +162,4 @@ if (path === '/info' || path === '/info/') {
     });
   })();
 </script>
+

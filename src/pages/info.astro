@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import PortableText from "../components/PortableText.astro";
 import { sanityClient } from 'sanity:client';
+import { slide } from "astro:transitions";
+
 
 const data = await sanityClient.fetch(`{
   "infoPage": *[_type == "infoPage"][0]{
@@ -31,7 +33,7 @@ const mailadres = data?.mailAdres ?? '';
 <Layout pageTitle={title} metaTitle={metaTitle} pageDescription={description}>
 
   {rows?.map((row: any) => (
-    <section class="section-info-row container--margin-normal">
+    <section class="section-info-row container--margin-normal" transition:animate={slide({ duration: "0.5s" })}>
       <div class="section-info-row-inner container--grid">
         <div class="info-label uppercase"><h2 class="small-text">{row.label}</h2></div>
         <div class="content-wrapper">

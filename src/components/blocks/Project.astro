@@ -2,6 +2,7 @@
 import SanityImage from "../SanityImage.astro";
 import SanityVideo from "../SanityVideo.astro";
 import PortableText from "../../components/PortableText.astro";
+import { slide } from "astro:transitions";
 
 
 const {
@@ -14,11 +15,43 @@ const {
   textPosition = "setting-text-below",
 } = Astro.props;
 
+// const animF = {
+//   old: {
+//     name: "moveX",
+//     duration: "0.35s",
+//     easing: "ease-in",
+//     direction: "reverse",
+//   },
+//   new: {
+//     name: "opacity",
+//     duration: "0.35s",
+//     easing: "ease-in-out",
+//   },
+// };
+
+// const animB = {
+//   old: {
+//     name: "opacity",
+//     duration: "0.35s",
+//     easing: "ease-in",
+//   },
+//   new: {
+//     name: "moveX",
+//     duration: "0.35s",
+//     easing: "ease-in-out",
+//   },
+// };
+
+// const customTransition = {
+//   forwards: animF,
+//   backwards: animB,
+// };
+
 ---
 
 <section class="section-project">
 
-  <div class={`section-project-inner ${textPosition}`}>
+  <div class={`section-project-inner ${textPosition}`} transition:animate={slide({ duration: "0.6s" })}>
 
     <div class={`images-desktop ${imageHeight}`}>
         <div class="swiper">
@@ -504,7 +537,7 @@ import { init } from "astro/virtual-modules/prefetch.js";
                             enabled: true,
                             sticky: false,
                             // releaseOnEdges: true,
-                            forceToAxis: true,
+                            forceToAxis: false,
                         },
                         // scrollbar: {
                         //     el: '.swiper-scrollbar',
