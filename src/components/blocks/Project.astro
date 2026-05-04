@@ -2,7 +2,7 @@
 import SanityImage from "../SanityImage.astro";
 import SanityVideo from "../SanityVideo.astro";
 import PortableText from "../../components/PortableText.astro";
-import { slide } from "astro:transitions";
+import { slide, fade } from "astro:transitions";
 
 
 const {
@@ -15,43 +15,33 @@ const {
   textPosition = "setting-text-below",
 } = Astro.props;
 
-// const animF = {
-//   old: {
-//     name: "moveX",
-//     duration: "0.35s",
-//     easing: "ease-in",
-//     direction: "reverse",
-//   },
-//   new: {
-//     name: "opacity",
-//     duration: "0.35s",
-//     easing: "ease-in-out",
-//   },
-// };
 
-// const animB = {
-//   old: {
-//     name: "opacity",
-//     duration: "0.35s",
-//     easing: "ease-in",
-//   },
-//   new: {
-//     name: "moveX",
-//     duration: "0.35s",
-//     easing: "ease-in-out",
-//   },
-// };
+const animProject = {
+  old: {
+    name: "moveX",
+    duration: "0.6s",
+    easing: "ease-in",
+    fillMode: "forwards",       
+    direction: "normal",
+  },
+  new: {
+    name: "moveX",
+    duration: "0.6s",
+    easing: "ease-out",
+    direction: "reverse",    
+    fillMode: "backwards",       
+  },
+};
 
-// const customTransition = {
-//   forwards: animF,
-//   backwards: animB,
-// };
-
+const customTransitionProject = {
+  forwards: animProject,
+  backwards: animProject,
+};
 ---
 
-<section class="section-project">
+<section class="section-project" transition:name="customSlide" transition:animate={customTransitionProject}>
 
-  <div class={`section-project-inner ${textPosition}`} transition:animate={slide({ duration: "0.6s" })}>
+  <div class={`section-project-inner ${textPosition}`}>
 
     <div class={`images-desktop ${imageHeight}`}>
         <div class="swiper">
@@ -98,6 +88,18 @@ const {
         </div>
         <div class="numbers">
             <p><span>0</span><span id="current-index">1</span><span class="c-dim">—</span><span class="c-dim">0</span><span class="c-dim"id="total-count">9</span></p>
+            <div class="swiper-nav">
+                <button class="swiper-button swiper-button-prev">
+                    <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
+                        <path d="M5.94 10.9259L10.89 6.02988H-2.86102e-06V4.91388H10.89L5.94 -0.00011766H7.38L12.87 5.47188L7.38 10.9259H5.94Z" fill="#F0E9E9"/>
+                    </svg>
+                </button>
+                <button class="swiper-button swiper-button-next">
+                    <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.94 10.9259L10.89 6.02988H-2.86102e-06V4.91388H10.89L5.94 -0.00011766H7.38L12.87 5.47188L7.38 10.9259H5.94Z" fill="#F0E9E9"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
   </div>
@@ -118,6 +120,9 @@ const {
             max-height: 500px;
             overflow: hidden;
             transition: max-height 0.6s ease;
+            :global(.media-wrapper) {
+                overflow: hidden;
+            }
             :global(.image) {
                 width: 100%;
             }
@@ -319,6 +324,13 @@ const {
             @include responsive($md){
                 display: none;
             }
+            .swiper-nav {
+                display: flex;
+                justify-content: end;
+                .swiper-button {
+                    padding: 5px;
+                }
+            }
         }
     }
 
@@ -506,15 +518,41 @@ const {
     import 'swiper/css/free-mode';
     import 'swiper/css/mousewheel';
     import 'swiper/css/scrollbar';
-import { init } from "astro/virtual-modules/prefetch.js";
+    import { init } from "astro/virtual-modules/prefetch.js";
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 
     document.addEventListener("astro:page-load", () => {
 
+        gsap.registerPlugin(ScrollTrigger);
+        const sections = document.querySelectorAll('.section-project');
+
+        function projectAnimations() {
+            sections.forEach(section => {
+                const imgs = Array.from(section.querySelectorAll('img.image'));
+
+                if (imgs.length === 0) return;
+
+                gsap.from(imgs, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        end: "bottom 20%",
+                        toggleActions: "play none none reverse",
+                    },
+                    scale: 0.9,
+                    duration: 0.6,
+                    ease: "back.out",
+                    stagger: 0.15,
+                    delay: 0.6,
+                });
+            });
+        }
+
         function initSliders(){
             if (window.innerWidth <= 835) return;
 
-            const sections = document.querySelectorAll('.section-project');
             sections.forEach(section => {
                 const swiperEl = section.querySelector('.swiper');
                 if (swiperEl && !swiperEl.classList.contains('swiper-initialized')) {
@@ -537,7 +575,7 @@ import { init } from "astro/virtual-modules/prefetch.js";
                             enabled: true,
                             sticky: false,
                             // releaseOnEdges: true,
-                            forceToAxis: false,
+                            forceToAxis: true,
                         },
                         // scrollbar: {
                         //     el: '.swiper-scrollbar',
@@ -560,6 +598,17 @@ import { init } from "astro/virtual-modules/prefetch.js";
                             currentIndexEl.innerText = totalSlides;
                         }
                     });
+
+                    const prevBtn = section.querySelector( '.swiper-button-prev' );
+                    const nextBtn = section.querySelector( '.swiper-button-next' );
+                    if ( prevBtn ) {
+                        prevBtn.addEventListener( 'mousedown', ( e ) => e.preventDefault() );
+                        prevBtn.addEventListener( 'click', () => swiper.slidePrev() );
+                    }
+                    if ( nextBtn ) {
+                        nextBtn.addEventListener( 'mousedown', ( e ) => e.preventDefault() );
+                        nextBtn.addEventListener( 'click', () => swiper.slideNext() );
+                    }
                 }
             });
         }
@@ -596,6 +645,7 @@ import { init } from "astro/virtual-modules/prefetch.js";
             });
         }
 
+        projectAnimations();
         syncNumbersHeight();
         initSliders();
 

@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import { sanityClient } from 'sanity:client';
 import { ClientRouter, fade, slide } from "astro:transitions";
 
+
 interface Props {
   pageTitle: string;
   metaTitle?: string;
@@ -46,7 +47,61 @@ const description = pageDescription || siteDescription;
 		<ClientRouter />
 
 	</head>
+	<script>
+		// @ts-nocheck
+		import { gsap } from "gsap";
+		import { ScrollTrigger } from "gsap/ScrollTrigger";
+		import Lenis from 'lenis';
+		import 'lenis/dist/lenis.css';
 
+		gsap.registerPlugin(ScrollTrigger);
+
+		function initLenis() {
+			if (window.__layoutLenis) {
+				return window.__layoutLenis;
+			}
+
+
+
+			const lenis = new Lenis({
+				duration: 2.2, // Duration of the scroll animation in seconds
+				anchors: true, // Enable anchor link support
+				smoothWheel: true, // Enable smooth scrolling for mouse wheel events
+				infinite: false, // Disable infinite scrolling (optional)
+			});
+
+			// Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
+			lenis.on('scroll', ScrollTrigger.update);
+			gsap.ticker.add((time) => {
+				lenis.raf(time * 1000);
+			});
+			gsap.ticker.lagSmoothing(0);
+
+			window.__layoutLenis = lenis;
+
+			return lenis;
+		}
+
+		initLenis();
+		ScrollTrigger.refresh();
+
+		function onAfterSwap() {
+			initLenis();
+			ScrollTrigger.refresh();
+		}
+
+		function onBeforeSwap() {
+			if (window.__layoutLenis) {
+				window.__layoutLenis.scrollTo(0, { immediate: true });
+			}
+		}
+
+		if (!window.__layoutLenisEventsBound) {
+			document.addEventListener('astro:before-swap', onBeforeSwap);
+			document.addEventListener('astro:after-swap', onAfterSwap);
+			window.__layoutLenisEventsBound = true;
+		}
+	</script>
 
 	<body>
 		<Navigation></Navigation>
