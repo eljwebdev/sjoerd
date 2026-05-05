@@ -94,6 +94,7 @@ const description = pageDescription || siteDescription;
 			if (window.__layoutLenis) {
 				window.__layoutLenis.scrollTo(0, { immediate: true });
 			}
+			ScrollTrigger.getAll().forEach(st => st.kill());
 		}
 
 		if (!window.__layoutLenisEventsBound) {

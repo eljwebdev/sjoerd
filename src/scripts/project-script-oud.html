@@ -1,0 +1,152 @@
+<script>
+    // @ts-nocheck
+    import Swiper from "swiper";
+    import { FreeMode, Mousewheel, Scrollbar } from "swiper/modules";
+    
+    import 'swiper/css';
+    import 'swiper/css/free-mode';
+    import 'swiper/css/mousewheel';
+    import 'swiper/css/scrollbar';
+    import { init } from "astro/virtual-modules/prefetch.js";
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+
+    document.addEventListener("astro:page-load", () => {
+
+        gsap.registerPlugin(ScrollTrigger);
+        const sections = document.querySelectorAll('.section-project');
+
+        function projectAnimations() {
+            if (window.innerWidth <= 835) return;
+
+            sections.forEach(section => {
+                const imgs = Array.from(section.querySelectorAll('img.image'));
+
+                if (imgs.length === 0) return;
+
+                gsap.from(imgs, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 90%",
+                        end: "bottom 20%",
+                        toggleActions: "play none none reverse",
+                    },
+                    scale: 1.1,
+                    duration: 0.5,
+                    ease: "back.out",
+                    stagger: 0.3,
+                    // delay: 0.6,
+                });
+            });
+        }
+
+        function initSliders(){
+            if (window.innerWidth <= 835) return;
+
+            sections.forEach(section => {
+                const swiperEl = section.querySelector('.swiper');
+                if (swiperEl && !swiperEl.classList.contains('swiper-initialized')) {
+                    console.log('Initializing swiper for section', section);
+                    const swiper = new Swiper(swiperEl, {
+                        modules: [FreeMode, Mousewheel, Scrollbar],
+                        freeMode: true,
+                        spaceBetween: 16,
+                        breakpoints: {
+                            // when window width is >= 1440px
+                            1440: {
+                            spaceBetween: 32
+                            },
+                        },
+                        slidesPerView: "auto",
+                        grabCursor: true,
+                        momentum: true,
+                        momentumRatio: 5,
+                        mousewheel: {
+                            enabled: true,
+                            sticky: false,
+                            // releaseOnEdges: true,
+                            forceToAxis: true,
+                        },
+                        // scrollbar: {
+                        //     el: '.swiper-scrollbar',
+                        //     draggable: true,
+                        // },
+                    });
+                    const currentIndexEl = section.querySelector('#current-index');
+                    const totalCountEl = section.querySelector('#total-count');
+                    const totalSlides = swiper.slides.length;
+                    if (totalCountEl) {
+                        totalCountEl.innerText = totalSlides;
+                    }
+                    swiper.on('slideChange', () => {
+                        if (currentIndexEl) {
+                            currentIndexEl.innerText = swiper.activeIndex + 1; 
+                        }
+                    });
+                    swiper.on('reachEnd', () => {
+                        if (currentIndexEl) {
+                            currentIndexEl.innerText = totalSlides;
+                        }
+                    });
+
+                    const prevBtn = section.querySelector( '.swiper-button-prev' );
+                    const nextBtn = section.querySelector( '.swiper-button-next' );
+                    if ( prevBtn ) {
+                        prevBtn.addEventListener( 'mousedown', ( e ) => e.preventDefault() );
+                        prevBtn.addEventListener( 'click', () => swiper.slidePrev() );
+                    }
+                    if ( nextBtn ) {
+                        nextBtn.addEventListener( 'mousedown', ( e ) => e.preventDefault() );
+                        nextBtn.addEventListener( 'click', () => swiper.slideNext() );
+                    }
+                }
+            });
+        }
+
+        const showButtons = document.querySelectorAll('.show-button');
+        showButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const parent = button.closest('.section-project-inner');
+                const imagesMobile = parent.querySelector('.images-mobile');
+                const textDiv = parent.querySelector('.info');
+                const buttonText = button.querySelector('span');
+                if (imagesMobile.classList.contains('expanded') && textDiv.classList.contains('expanded') && button.classList.contains('expanded')) {
+                    imagesMobile.classList.remove('expanded');
+                    textDiv.classList.remove('expanded');
+                    button.classList.remove('expanded');
+                    buttonText.innerText = "View all";
+                } else {
+                    imagesMobile.classList.add('expanded');
+                    textDiv.classList.add('expanded');
+                    button.classList.add('expanded');
+                    buttonText.innerText = "View less";
+                }
+            });
+        });
+
+        function syncNumbersHeight() {
+            if (window.innerWidth <= 835) return;
+            document.querySelectorAll('.section-project-inner.settings-text-left, .section-project-inner.settings-text-right').forEach(inner => {
+                const titles = inner.querySelector('.titles');
+                const numbers = inner.querySelector('.numbers');
+                if (titles && numbers) {
+                    numbers.style.height = titles.offsetHeight + 'px';
+                }
+            });
+        }
+
+        projectAnimations();
+        syncNumbersHeight();
+        initSliders();
+
+        window.addEventListener('resize', () => {
+            syncNumbersHeight();
+            initSliders();
+        });
+
+    });
+
+
+
+</script>
