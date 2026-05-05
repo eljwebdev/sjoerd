@@ -41,10 +41,10 @@ function DeployButton() {
 
     try {
       // Replace with your Cloudflare Pages deploy hook URL
-      const deployHookUrl = import.meta.env.PUBLIC_CLOUDFLARE_DEPLOY_HOOK;
+      const deployHookUrl = process.env.SANITY_STUDIO_CLOUDFLARE_DEPLOY_HOOK;
 
       if (!deployHookUrl) {
-        alert("Deploy hook URL not configured. Add PUBLIC_CLOUDFLARE_DEPLOY_HOOK to your .env file");
+        alert("Deploy hook URL not configured. Add SANITY_STUDIO_CLOUDFLARE_DEPLOY_HOOK to your .env file");
         setIsDeploying(false);
         return;
       }

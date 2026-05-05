@@ -8,8 +8,8 @@ import { CogIcon, TransferIcon } from "@sanity/icons";
 const singletonTypes = new Set(["homePage", "infoPage"]);
 
 export default defineConfig({
-  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-  dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+  dataset: process.env.SANITY_STUDIO_DATASET,
   plugins: [
     structureTool({
       structure: (S) =>
