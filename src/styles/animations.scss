@@ -1,32 +1,88 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
-@keyframes opacity {
+/* default globals view transitions */
+
+// @view-transition { navigation: auto; }
+
+//disable standard browser view transition animations
+// ::view-transition-group(*) {
+// animation: none;
+// }
+// ::view-transition-old(root),
+// ::view-transition-new(root) {
+// animation: none;
+// }
+
+/* --- */
+
+@keyframes opacityTransition {
     0% {
-        opacity: 0;
-    }
-    100% {
         opacity: 1;
     }
-}
-
-@keyframes moveX {
-    0% {
-        transform: translateX(0);
-
-    }
-    100% {
-    transform: translateX(-100vw);
-
+    20% {
+        opacity: 0;
     }
 }
+
 
 @keyframes moveNav {
     0% {
+    transform: translateY(0);
+    }
+    20% {
     transform: translateY(0);
     }
     100% {
     transform: translateY(-20vh);
     }   
 }
+
+
+@keyframes moveX {
+    0% {
+        transform: translateX(-100vw);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.section-project {
+    view-transition-class: project;
+}
+
+/* This targets ANY old element whose view-transition-name starts with "project-" */
+// ::view-transition-old(project-0) {
+//   animation-name: moveX;
+//   animation-duration: 0.6s;
+//   animation-fill-mode: backwards;
+//   animation-direction: reverse;
+// }
+
+// ::view-transition-new(project-0) {
+//   animation-name: moveX;
+//   animation-fill-mode: forwards;
+//   animation-duration: 0.6s;
+//   animation-direction: normal;
+// }
+
+
+
+// ::view-transition-old(.project) {
+//   animation-name: opacityTransition;
+//   animation-duration: 1.6s;
+//   animation-fill-mode: backwards;
+//   animation-direction: reverse;
+// }
+
+// ::view-transition-new(.project) {
+//   animation-name: moveX;
+//   animation-fill-mode: forwards;
+//   animation-duration: 1.6s;
+//   animation-direction: normal;
+// }
+
+
 

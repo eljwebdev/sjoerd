@@ -28,14 +28,14 @@ if (path === '/info' || path === '/info/') {
 const animNav = {
   old: {
     name: "moveNav",
-    duration: "0.6s",
+    duration: "0.7s",
     easing: "ease-in",
     fillMode: "forwards",       
     direction: "normal",
   },
   new: {
     name: "moveNav",
-    duration: "0.6s",
+    duration: "0.7s",
     easing: "ease-out",
     direction: "reverse",    
     fillMode: "backwards",       
@@ -48,7 +48,7 @@ const customTransitionNav = {
 };
 
 ---
-<nav class:list={['nav', 'nav-original', navClass]} transition:name="nav-wrapper" transition:animate={fade({ duration: "0.5s" })}>
+<nav class:list={['nav', 'nav-original', navClass]} transition:name="nav-wrapper" transition:animate={fade({ duration: "0.6s" })}>
   <div class="nav--inner container--margin-normal container--grid">
     <div class="left">
       <a class="logo-link" href="/">{menu?.menuTitle}</a>

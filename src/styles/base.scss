@@ -11,8 +11,7 @@
 
 html {
     overflow-x: hidden;
-    background: var(--c-black);
-
+    background-color: var(--c-black);
 }
 
 html,
@@ -28,7 +27,7 @@ body {
     word-break: break-word;
     -webkit-word-break: break-word;
 
-    scroll-behavior: smooth;
+    // scroll-behavior: smooth;
     position: relative;
 }
 
@@ -114,9 +113,6 @@ ul a {
 
 /* ------- global styles -------  */
 
-// main {
-//     background-color: var(--c-black);
-// }
 
 .container--grid {
     @include grid();
@@ -156,6 +152,20 @@ ul a {
     }
 }
 
+.section-info-row:first-of-type {
+// padding-top: 128px;
+padding-top: calc(128px + 42px);
+@include responsive($md){
+    padding-top: 122px;
+}
+}
+.section-info-row:not(:first-of-type) {
+padding-top: 244px;
+@include responsive($md){
+    padding-top: 122px;
+}
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -170,14 +180,9 @@ body {
     }
 }
 
-// .content {
-//     padding-top: 150px;
-
-//     @include responsive ($md) {
-//         padding-top: 100px;
-//     }
-// }
-
+main, .image-wrapper, section, .section-project-inner {
+    background: var(--c-black);
+}
 
   
 
@@ -192,3 +197,4 @@ body {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+

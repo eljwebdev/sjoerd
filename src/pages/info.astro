@@ -29,34 +29,34 @@ const data = await sanityClient.fetch(`{
 const { title, metaTitle, description, rows } = data?.infoPage ?? {};
 const mailadres = data?.mailAdres ?? '';
 
-const animProject = {
-  old: {
-    name: "moveX",
-    duration: "0.6s",
-    easing: "ease-in",
-    fillMode: "forwards",       
-    direction: "normal",
-  },
-  new: {
-    name: "moveX",
-    duration: "0.6s",
-    easing: "ease-out",
-    direction: "reverse",    
-    fillMode: "backwards",       
-  },
-};
+// const animProject = {
+//   old: {
+//     name: "moveX",
+//     duration: "0.6s",
+//     easing: "ease-in",
+//     fillMode: "forwards",       
+//     direction: "normal",
+//   },
+//   new: {
+//     name: "moveX",
+//     duration: "0.6s",
+//     easing: "ease-out",
+//     direction: "reverse",    
+//     fillMode: "backwards",       
+//   },
+// };
 
-const customTransitionProject = {
-  forwards: animProject,
-  backwards: animProject,
-};
+// const customTransitionProject = {
+//   forwards: animProject,
+//   backwards: animProject,
+// };
 
 ---
 
 <Layout pageTitle={title} metaTitle={metaTitle} pageDescription={description}>
 
   {rows?.map((row: any) => (
-    <section class="section-info-row container--margin-normal" transition:name="customSlide" transition:animate={customTransitionProject}>
+    <section class="section-info-row container--margin-normal" transition:animate={fade({ duration: "0.5s" })}>
       <div class="section-info-row-inner container--grid">
         <div class="info-label uppercase"><h2 class="small-text">{row.label}</h2></div>
         <div class="content-wrapper">
@@ -93,7 +93,7 @@ const customTransitionProject = {
     </section>
   ))}
 
-  <section class="section-info-row container--margin-normal" transition:animate={slide({ duration: "0.5s" })}>
+  <section class="section-info-row container--margin-normal" transition:animate={fade({ duration: "0.5s" })}>
     <div class="section-info-row-inner container--grid">
       <div class="info-label uppercase"><h2 class="small-text">contact</h2></div>
       <div class="content-wrapper">
@@ -109,18 +109,6 @@ const customTransitionProject = {
 </Layout>
 
 <style lang="scss">
-  .section-info-row:first-of-type {
-    padding-top: 128px;
-    @include responsive($md){
-      padding-top: 122px;
-    }
-  }
-  .section-info-row:not(:first-of-type) {
-    padding-top: 244px;
-    @include responsive($md){
-      padding-top: 122px;
-    }
-  }
   .container--grid {
     @include responsive($md){
       display: flex;

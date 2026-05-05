@@ -99,7 +99,7 @@ const { title, metaTitle, description, work } = homePage ?? {};
 
 <Layout pageTitle={title} metaTitle={metaTitle} pageDescription={description}>
 
-{work?.map((project) => (
+{work?.map((project: any, index: number) => (
   <Project
     imagesDesktop={project.imagesDesktop}
     imagesMobile={project.imagesMobile}
@@ -108,6 +108,7 @@ const { title, metaTitle, description, work } = homePage ?? {};
     textEntries={project.textEntries}
     imageHeight={project.imageHeight}
     textPosition={project.textPosition}
+    transitionName={`project-${index}`}
   />
 ))}
 

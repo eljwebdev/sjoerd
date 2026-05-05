@@ -13,33 +13,14 @@ const {
   textEntries,
   imageHeight = "setting-height-normal",
   textPosition = "setting-text-below",
+  transitionName,
 } = Astro.props;
 
 
-const animProject = {
-  old: {
-    name: "moveX",
-    duration: "0.6s",
-    easing: "ease-in",
-    fillMode: "forwards",       
-    direction: "normal",
-  },
-  new: {
-    name: "moveX",
-    duration: "0.6s",
-    easing: "ease-out",
-    direction: "reverse",    
-    fillMode: "backwards",       
-  },
-};
 
-const customTransitionProject = {
-  forwards: animProject,
-  backwards: animProject,
-};
 ---
 
-<section class="section-project" transition:name="customSlide" transition:animate={customTransitionProject}>
+<section class="section-project" transition:name={transitionName}>
 
   <div class={`section-project-inner ${textPosition}`}>
 
@@ -537,15 +518,15 @@ const customTransitionProject = {
                 gsap.from(imgs, {
                     scrollTrigger: {
                         trigger: section,
-                        start: "top 80%",
+                        start: "top 90%",
                         end: "bottom 20%",
                         toggleActions: "play none none reverse",
                     },
-                    scale: 0.9,
-                    duration: 0.6,
+                    scale: 0.95,
+                    duration: 0.5,
                     ease: "back.out",
-                    stagger: 0.15,
-                    delay: 0.6,
+                    stagger: 0.3,
+                    // delay: 0.6,
                 });
             });
         }
