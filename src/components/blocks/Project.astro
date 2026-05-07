@@ -310,7 +310,8 @@ const {
                 display: none;
             }
             .swiper-nav {
-                display: flex;
+                // display: flex;
+                display: none;
                 justify-content: end;
                 .swiper-button {
                     padding: 5px;
@@ -529,8 +530,8 @@ const {
                         toggleActions: "play none none reverse",
                     },
                     scale: 1.1,
-                    duration: 0.5,
-                    ease: "back.out",
+                    duration: 2,
+                    ease: "circ.out",
                     stagger: 0.3,
                     // delay: 0.6,
                 });
@@ -547,6 +548,7 @@ const {
                     const swiper = new Swiper(swiperEl, {
                         modules: [FreeMode, Mousewheel, Scrollbar],
                         freeMode: true,
+                        // loop: true,
                         spaceBetween: 16,
                         breakpoints: {
                             // when window width is >= 1440px

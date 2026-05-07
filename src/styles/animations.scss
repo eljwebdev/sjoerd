@@ -16,6 +16,21 @@
 
 /* --- */
 
+/* another global disabler */
+// html {
+// view-transition-name: none !important;
+// }
+
+// ::view-transition,
+// ::view-transition-group(*),
+// ::view-transition-old(*),
+// ::view-transition-new(*) {
+//     display: none !important;
+// }
+
+/* --- */
+
+
 @keyframes opacityTransition {
     0% {
         opacity: 1;
@@ -47,45 +62,17 @@
     }
 }
 
-.section-project {
-    view-transition-class: project;
-}
-
-
-/* another global disabler */
-// html {
-// view-transition-name: none !important;
+// .section-project {
+//     view-transition-class: project;
 // }
 
-// ::view-transition,
-// ::view-transition-group(*),
-// ::view-transition-old(*),
-// ::view-transition-new(*) {
-//     display: none !important;
+// ::view-transition-group(.project){
+//     animation-duration: 1.2s;
 // }
-
-
-
-/* This targets ANY old element whose view-transition-name starts with "project-" */
-// ::view-transition-old(project-0) {
-//   animation-name: moveX;
-//   animation-duration: 0.6s;
-//   animation-fill-mode: backwards;
-//   animation-direction: reverse;
-// }
-
-// ::view-transition-new(project-0) {
-//   animation-name: moveX;
-//   animation-fill-mode: forwards;
-//   animation-duration: 0.6s;
-//   animation-direction: normal;
-// }
-
-
 
 // ::view-transition-old(.project) {
-//   animation-name: opacityTransition;
-//   animation-duration: 1.6s;
+//   animation-name: moveX;
+//   animation-duration: 0.6s;
 //   animation-fill-mode: backwards;
 //   animation-direction: reverse;
 // }
@@ -93,7 +80,7 @@
 // ::view-transition-new(.project) {
 //   animation-name: moveX;
 //   animation-fill-mode: forwards;
-//   animation-duration: 1.6s;
+//   animation-duration: 0.6s;
 //   animation-direction: normal;
 // }
 

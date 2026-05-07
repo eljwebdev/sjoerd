@@ -136,7 +136,7 @@ ul a {
 }
 
 .section-project:first-of-type {
-    margin-top: calc(96px + 40px);
+    margin-top: calc(96px);
     @include responsive($md){
         margin-top: 0px;
     }
