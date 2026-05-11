@@ -120,21 +120,29 @@ ul, ol {
 
 .portable-text-container {
   a {
-    // text-decoration: underline;
-    // text-decoration-thickness: 0.5px;
-    // text-underline-offset: 2px;
+    text-decoration: underline;
+    text-decoration-thickness: 0.5px;
+    text-underline-offset: 2px;
     display: inline-flex;
     align-items: center;
     position: relative;
-  
-    &::before {
-      content: "";
-      width: calc(100% - 12.5px);
-      height: 0.5px;
-      background-color: currentColor;
-      position: absolute;
-      left: 0;
-      bottom: 1.7px;
+    
+    @include responsiveMin($md){
+      text-decoration: none;
+      &::before {
+        content: "";
+        width: calc(100% - 12.5px);
+        height: 0.5px;
+        background-color: currentColor;
+        position: absolute;
+        left: 0;
+        bottom: 1.7px;
+      }
+      &:hover {
+        &::before {
+          animation: underlineWidth 0.35s ease-out forwards;
+        }
+      }
     }
     &::after {
       content: "";
@@ -149,11 +157,6 @@ ul, ol {
           width: 5px;
           height: 5px;
           margin-left: 4px;
-      }
-    }
-    &:hover {
-      &::before {
-        animation: underlineWidth 0.35s ease-out forwards;
       }
     }
   }
